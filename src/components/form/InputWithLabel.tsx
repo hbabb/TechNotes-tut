@@ -21,7 +21,7 @@ export function InputWithLabel<S>({ fieldTitle, nameInSchema, className, ...prop
       name={nameInSchema}
       render={({ field }) => (
         <FormItem>
-          <FormLabel className="text-base" htmlFor={nameInSchema}>
+          <FormLabel className="ml-4 text-base" htmlFor={nameInSchema}>
             {fieldTitle}
           </FormLabel>
 
