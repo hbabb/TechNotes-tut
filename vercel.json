@@ -1,0 +1,16 @@
+{
+  "git": {
+    "deploymentEnabled": {
+      "main": false,
+      "feat/*": false,
+      "fix/*": false,
+      "hotfix/*": false,
+      "chore/*": false,
+      "docs/*": false,
+      "style/*": false,
+      "refactor/*": false,
+      "staging": true,
+      "production": true
+    }
+  }
+}

@@ -1,0 +1,16 @@
+#!/bin/bash
+
+BRANCH=$(git rev-parse --abbrev-ref HEAD)
+echo "Current branch: $BRANCH"
+
+VALID_BRANCH_REGEX="^(feat|fix|hotfix|chore|docs|style|refactor)\/[a-z0-9-]+$"
+echo "Checking against regex: $VALID_BRANCH_REGEX"
+
+if ! [[ $BRANCH =~ $VALID_BRANCH_REGEX ]] && [ "$BRANCH" != "staging" ] && [ "$BRANCH" != "production" ] && [ "$BRANCH" != "main" ]; then
+    echo "Invalid branch name: $BRANCH"
+    echo "Branch names must match pattern: feat/feature-name, fix/fix-name, etc."
+    echo "Or be exactly 'staging' or 'production'"
+    exit 1
+fi
+
+exit 0
