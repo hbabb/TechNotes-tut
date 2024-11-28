@@ -1,3 +1,4 @@
+import CustomerForm from '@/app/(frontend)/customers/form/CustomerForm'
 import { BackButton } from '@/components/layout/BackButton'
 import { getCustomer } from '@/lib/queries/getCustomers'
 import * as Sentry from '@sentry/nextjs'
@@ -16,8 +17,7 @@ export default async function CustomerFormPage({
 
     // Edit customer form
     if (customerId) {
-      // biome-ignore lint/style/useNumberNamespace: <explanation>
-      const customer = await getCustomer(parseInt(customerId))
+      const customer = await getCustomer(Number.parseInt(customerId))
 
       if (!customer) {
         return (
@@ -27,6 +27,14 @@ export default async function CustomerFormPage({
           </>
         )
       }
+      console.log(customer)
+      // put customer form component
+      return <CustomerForm customer={customer} />
+
+      // biome-ignore lint/style/noUselessElse: <explanation>
+    } else {
+      // New customer form
+      return <CustomerForm />
     }
   } catch (e) {
     if (e instanceof Error) {

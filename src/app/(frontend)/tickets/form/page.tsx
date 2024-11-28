@@ -1,11 +1,8 @@
+import TicketForm from '@/app/(frontend)/tickets/form/TicketForm'
 import { BackButton } from '@/components/layout/BackButton'
 import { getCustomer } from '@/lib/queries/getCustomers'
 import { getTicket } from '@/lib/queries/getTickets'
 import * as Sentry from '@sentry/nextjs'
-
-export const metadata = {
-  title: 'Tickets Form',
-}
 
 export default async function TicketFormPage({
   searchParams,
@@ -37,8 +34,18 @@ export default async function TicketFormPage({
         )
       }
 
+      if (!customer.active) {
+        return (
+          <>
+            <h2 className="mb-2 text-2xl">Customer ID #{customerId} is not active.</h2>
+            <BackButton title="Go Back" variant="default" />
+          </>
+        )
+      }
+
       // return ticket form
       console.log(customer)
+      return <TicketForm customer={customer} />
     }
 
     // Edit ticket form
@@ -59,6 +66,7 @@ export default async function TicketFormPage({
       // return ticket form
       console.log('ticket: ', ticket)
       console.log('customer: ', customer)
+      return <TicketForm customer={customer} ticket={ticket} />
     }
   } catch (e) {
     if (e instanceof Error) {
