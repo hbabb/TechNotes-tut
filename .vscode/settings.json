@@ -19,7 +19,8 @@
     "passwordless",
     "repairshop",
     "tailwindcss",
-    "turbopack"
+    "turbopack",
+    "vercel"
   ],
   "[json]": {
     "editor.defaultFormatter": "vscode.json-language-features"
