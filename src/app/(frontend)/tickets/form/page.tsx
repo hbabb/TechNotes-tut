@@ -1,11 +1,69 @@
+import { BackButton } from '@/components/layout/BackButton'
+import { getCustomer } from '@/lib/queries/getCustomers'
+import { getTicket } from '@/lib/queries/getTickets'
+import * as Sentry from '@sentry/nextjs'
+
 export const metadata = {
   title: 'Tickets Form',
 }
 
-export default function TicketsForm() {
-  return (
-    <div>
-      <h2>Tickets Form Page</h2>
-    </div>
-  )
+export default async function TicketFormPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ [key: string]: string | undefined }>
+}) {
+  try {
+    const { customerId, ticketId } = await searchParams
+
+    if (!customerId && !ticketId) {
+      return (
+        <>
+          <h2 className="mb-2 text-2xl">Ticket ID or Customer ID required to load ticket form</h2>
+          <BackButton title="Go Back" variant="default" />
+        </>
+      )
+    }
+
+    // New ticket form
+    if (customerId) {
+      const customer = await getCustomer(Number.parseInt(customerId))
+
+      if (!customer) {
+        return (
+          <>
+            <h2 className="mb-2 text-2xl">Customer ID #{customerId} not found</h2>
+            <BackButton title="Go Back" variant="default" />
+          </>
+        )
+      }
+
+      // return ticket form
+      console.log(customer)
+    }
+
+    // Edit ticket form
+    if (ticketId) {
+      const ticket = await getTicket(Number.parseInt(ticketId))
+
+      if (!ticket) {
+        return (
+          <>
+            <h2 className="mb-2 text-2xl">Ticket ID #{ticketId} not found</h2>
+            <BackButton title="Go Back" variant="default" />
+          </>
+        )
+      }
+
+      const customer = await getCustomer(ticket.customerId)
+
+      // return ticket form
+      console.log('ticket: ', ticket)
+      console.log('customer: ', customer)
+    }
+  } catch (e) {
+    if (e instanceof Error) {
+      Sentry.captureException(e)
+      throw e
+    }
+  }
 }
