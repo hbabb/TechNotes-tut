@@ -33,7 +33,10 @@ export function SelectWithLabel<S>({ fieldTitle, nameInSchema, data, className }
       name={nameInSchema}
       render={({ field }) => (
         <FormItem>
-          <FormLabel className="text-base" htmlFor={nameInSchema}>
+          <FormLabel
+            className="ml-4 text-base text-matrix-dark dark:text-matrix-glow"
+            htmlFor={nameInSchema}
+          >
             {fieldTitle}
           </FormLabel>
 
