@@ -48,9 +48,9 @@ export default function CustomerForm({ customer }: Props) {
   }
 
   return (
-    <Card className="before:-z-10 relative mt-6 border-2 border-matrix/50 bg-black/80 shadow-lg backdrop-blur-sm before:absolute before:inset-0 before:border-2 before:border-matrix/20 before:blur-md sm:px-8">
+    <Card className="before:-inset-px after:-inset-px after:-z-10 relative mt-6 rounded-lg border bg-background/95 p-6 shadow-lg backdrop-blur before:absolute before:rounded-lg before:bg-gradient-to-b before:from-primary/20 before:to-primary/0 before:shadow-lg after:absolute after:rounded-lg after:bg-gradient-to-b after:from-primary/20 after:to-primary/0 after:blur-md supports-[backdrop-filter]:bg-background/60 dark:border-primary/20 dark:bg-background/80 dark:shadow-primary/10 dark:after:from-primary/30 dark:before:from-primary/30">
       <CardHeader className="px-0">
-        <CardTitle className="font-bold text-2xl text-matrix">
+        <CardTitle className="font-bold text-2xl text-matrix-dark dark:text-matrix-glow">
           {customer?.id ? 'Edit' : 'New'} Customer Form
         </CardTitle>
       </CardHeader>
@@ -58,7 +58,7 @@ export default function CustomerForm({ customer }: Props) {
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(submitForm)}
-            className="flex flex-col gap-4 md:flex-row md:gap-8"
+            className="flex flex-col gap-4 text-matrix-dark md:flex-row md:gap-8 dark:text-matrix"
           >
             <div className="flex w-full max-w-xs flex-col gap-4">
               <InputWithLabel<insertCustomerSchemaType>
@@ -128,6 +128,7 @@ export default function CustomerForm({ customer }: Props) {
                 <Button
                   type="submit"
                   className="w-3/4 bg-matrix font-bold text-black transition-colors duration-200 hover:bg-matrix/80"
+                  variant="default"
                   title="Save"
                 >
                   Save
@@ -136,6 +137,7 @@ export default function CustomerForm({ customer }: Props) {
                 <Button
                   type="button"
                   className="bg-red-900/80 text-white transition-colors duration-200 hover:bg-red-900"
+                  variant="destructive"
                   title="Reset"
                   onClick={() => form.reset(defaultValues)}
                 >
