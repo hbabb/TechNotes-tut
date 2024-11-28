@@ -3,7 +3,7 @@ import Link from 'next/link'
 
 import { Button } from '@/components/ui/button'
 // import { LoginLink } from '@kinde-oss/kinde-auth-nextjs/components'
-export default function LandingPage() {
+export default function Home() {
   return (
     <div className="">
       <MatrixRain />
