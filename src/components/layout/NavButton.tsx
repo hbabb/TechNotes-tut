@@ -16,7 +16,7 @@ export function NavButton({ icon: Icon, label, href }: Props) {
       size={'icon'}
       aria-label={label}
       title={label}
-      className="rounded-full"
+      className="rounded-full hover:bg-matrix-dark hover:text-matrix-glow dark:hover:bg-matrix-glow dark:hover:text-matrix-dark"
       asChild
     >
       {href ? (

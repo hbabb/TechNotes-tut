@@ -8,7 +8,7 @@ import { Button } from '@/components/ui/button'
 
 export function Header() {
   return (
-    <header className="sticky top-0 z-20 h-12 animate-slide border-b p-2">
+    <header className="sticky top-0 z-20 h-12 animate-slide border-matrix-dark border-b-2 p-2 dark:border-matrix-glow">
       <div className="flex h-8 w-full items-center justify-between">
         <div className="flex items-center gap-2">
           <NavButton icon={HomeIcon} label="Home" href="/home" />
@@ -28,7 +28,7 @@ export function Header() {
           <Button
             variant={'ghost'}
             size={'icon'}
-            className="rounded-full"
+            className="rounded-full hover:bg-matrix-dark hover:text-matrix-glow dark:hover:bg-matrix-glow dark:hover:text-matrix-dark"
             aria-label="LogOut"
             title="LogOut"
             asChild
