@@ -1,8 +1,8 @@
-'use client'
+"use client";
 
-import { Button } from '@/components/ui/button'
-import { LoginLink } from '@kinde-oss/kinde-auth-nextjs'
-import { LogIn } from 'lucide-react'
+import { Button } from "@/components/ui/button";
+import { LoginLink } from "@kinde-oss/kinde-auth-nextjs";
+import { LogIn } from "lucide-react";
 
 export function LoginButton() {
   return (
@@ -16,5 +16,5 @@ export function LoginButton() {
         </div>
       </LoginLink>
     </Button>
-  )
+  );
 }

@@ -1,11 +1,11 @@
-import { LoginButton } from '@/components/layout/LoginButton'
-import { Button } from '@/components/ui/button'
-import { Rewind } from 'lucide-react'
-import Link from 'next/link'
+import { LoginButton } from "@/components/layout/LoginButton";
+import { Button } from "@/components/ui/button";
+import { Rewind } from "lucide-react";
+import Link from "next/link";
 
 export const metadata = {
-  title: 'Login',
-}
+  title: "Login",
+};
 
 export default function LoginPage() {
   return (
@@ -29,5 +29,5 @@ export default function LoginPage() {
         </Button>
       </div>
     </main>
-  )
+  );
 }

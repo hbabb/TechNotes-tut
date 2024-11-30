@@ -1,10 +1,10 @@
-import { LogoutLink } from '@kinde-oss/kinde-auth-nextjs/components'
-import { File, HomeIcon, LogOut, UsersRound } from 'lucide-react'
-import Link from 'next/link'
+import { LogoutLink } from "@kinde-oss/kinde-auth-nextjs/components";
+import { File, HomeIcon, LogOut, UsersRound } from "lucide-react";
+import Link from "next/link";
 
-import { ModeToggle } from '@/components/layout/ModeToggle'
-import { NavButton } from '@/components/layout/NavButton'
-import { Button } from '@/components/ui/button'
+import { ModeToggle } from "@/components/layout/ModeToggle";
+import { NavButton } from "@/components/layout/NavButton";
+import { Button } from "@/components/ui/button";
 
 export function Header() {
   return (
@@ -26,8 +26,8 @@ export function Header() {
           <ModeToggle />
 
           <Button
-            variant={'ghost'}
-            size={'icon'}
+            variant={"ghost"}
+            size={"icon"}
             className="rounded-full hover:bg-matrix-dark hover:text-matrix-glow dark:hover:bg-matrix-glow dark:hover:text-matrix-dark"
             aria-label="LogOut"
             title="LogOut"
@@ -40,5 +40,5 @@ export function Header() {
         </div>
       </div>
     </header>
-  )
+  );
 }

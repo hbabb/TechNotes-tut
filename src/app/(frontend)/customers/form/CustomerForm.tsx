@@ -1,64 +1,74 @@
-'use client'
+"use client";
 
-import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Form } from '@/components/ui/form'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { useForm } from 'react-hook-form'
+import { Button } from "@/components/ui/button";
+import { Form } from "@/components/ui/form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Card, CardHeader, CircularProgress } from "@nextui-org/react";
+import { useForm } from "react-hook-form";
 
-import { InputWithLabel } from '@/components/form/InputWithLabel'
-import { SelectWithLabel } from '@/components/form/SelectWithLabel'
-import { TextAreaWithLabel } from '@/components/form/TextAreaWithLabel'
+import { CheckboxWithLabel } from "@/components/form/CheckboxWithLabel";
+import { InputWithLabel } from "@/components/form/InputWithLabel";
+import { SelectWithLabel } from "@/components/form/SelectWithLabel";
+import { TextAreaWithLabel } from "@/components/form/TextAreaWithLabel";
 
-import { StatesArray } from '@/constants/StatesArray'
+import { useKindeBrowserClient } from "@kinde-oss/kinde-auth-nextjs";
 
+import { StatesArray } from "@/constants/StatesArray";
+
+import { CardContent, CardTitle } from "@/components/ui/card";
 import {
   insertCustomerSchema,
   type insertCustomerSchemaType,
   type selectCustomerSchemaType,
-} from '@/lib/schema/customers'
+} from "@/lib/schema/customers";
 
 type Props = {
-  customer?: selectCustomerSchemaType
-}
+  customer?: selectCustomerSchemaType;
+};
 
 export default function CustomerForm({ customer }: Props) {
+  const { getPermission, isLoading } = useKindeBrowserClient();
+  const isManager = !isLoading && getPermission("manager")?.isGranted;
+  // const permObj = getPermissions();
+  // const isAuthorized = !isLoading && permObj.permissions.some(perm => perm === 'manager' || perm === 'admin');
+
   const defaultValues: insertCustomerSchemaType = {
     id: customer?.id ?? 0,
-    firstName: customer?.firstName ?? '',
-    lastName: customer?.lastName ?? '',
-    address1: customer?.address1 ?? '',
-    address2: customer?.address2 ?? '',
-    city: customer?.city ?? '',
-    state: customer?.state ?? '',
-    zip: customer?.zip ?? '',
-    phone: customer?.phone ?? '',
-    email: customer?.email ?? '',
-    notes: customer?.notes ?? '',
-  }
+    firstName: customer?.firstName ?? "",
+    lastName: customer?.lastName ?? "",
+    address1: customer?.address1 ?? "",
+    address2: customer?.address2 ?? "",
+    city: customer?.city ?? "",
+    state: customer?.state ?? "",
+    zip: customer?.zip ?? "",
+    phone: customer?.phone ?? "",
+    email: customer?.email ?? "",
+    notes: customer?.notes ?? "",
+    active: customer?.active ?? true,
+  };
 
   const form = useForm<insertCustomerSchemaType>({
-    mode: 'onBlur',
+    mode: "onBlur",
     resolver: zodResolver(insertCustomerSchema),
     defaultValues,
-  })
+  });
 
   async function submitForm(data: insertCustomerSchemaType) {
-    console.log(data)
+    console.log(data);
   }
 
   return (
     <Card className="before:-inset-px after:-inset-px after:-z-10 relative mt-6 rounded-lg border bg-background/95 p-6 shadow-lg backdrop-blur before:absolute before:rounded-lg before:bg-gradient-to-b before:from-primary/20 before:to-primary/0 before:shadow-lg after:absolute after:rounded-lg after:bg-gradient-to-b after:from-primary/20 after:to-primary/0 after:blur-md supports-[backdrop-filter]:bg-background/60 dark:border-primary/20 dark:bg-background/80 dark:shadow-primary/10 dark:after:from-primary/30 dark:before:from-primary/30">
       <CardHeader className="px-0">
         <CardTitle className="font-bold text-2xl text-matrix-dark dark:text-matrix-glow">
-          {customer?.id ? 'Edit' : 'New'} Customer Form
+          {customer?.id ? "Edit" : "New"} Customer {customer?.id ? `#${customer.id}` : "Form"}
         </CardTitle>
       </CardHeader>
       <CardContent className="px-0">
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(submitForm)}
-            className="flex flex-col gap-4 text-matrix-dark md:flex-row md:gap-8 dark:text-matrix"
+            className="flex flex-col gap-4 text-matrix md:flex-row md:gap-8 dark:text-matrix"
           >
             <div className="flex w-full max-w-xs flex-col gap-4">
               <InputWithLabel<insertCustomerSchemaType>
@@ -124,6 +134,18 @@ export default function CustomerForm({ customer }: Props) {
                 className="h-40 border-matrix/30 bg-matrix-dark transition-all duration-200 focus-within:border-matrix focus-within:ring-1 focus-within:ring-matrix"
               />
 
+              {isLoading ? (
+                <div>
+                  <CircularProgress label="Loading..." color="success" aria-label="Loading..." />
+                </div>
+              ) : isManager && customer?.id ? (
+                <CheckboxWithLabel<insertCustomerSchemaType>
+                  fieldTitle="Active"
+                  nameInSchema="active"
+                  message="Yes"
+                />
+              ) : null}
+
               <div className="flex gap-2">
                 <Button
                   type="submit"
@@ -149,5 +171,5 @@ export default function CustomerForm({ customer }: Props) {
         </Form>
       </CardContent>
     </Card>
-  )
+  );
 }
