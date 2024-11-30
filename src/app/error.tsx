@@ -1,21 +1,21 @@
-'use client' // Error components must be Client Components
+"use client"; // Error components must be Client Components
 
-import * as Sentry from '@sentry/nextjs'
-import { useEffect } from 'react'
+import * as Sentry from "@sentry/nextjs";
+import { useEffect } from "react";
 
 // biome-ignore lint/suspicious/noShadowRestrictedNames: <explanation>
 export default function Error({
   error,
   reset,
 }: {
-  error: Error & { digest?: string }
-  reset: () => void
+  error: Error & { digest?: string };
+  reset: () => void;
 }) {
   useEffect(() => {
     // Log the error to an error reporting service
-    console.error(error)
-    Sentry.captureException(error)
-  }, [error])
+    console.error(error);
+    Sentry.captureException(error);
+  }, [error]);
 
   return (
     <div>
@@ -30,5 +30,5 @@ export default function Error({
         Try again
       </button>
     </div>
-  )
+  );
 }

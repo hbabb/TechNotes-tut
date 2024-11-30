@@ -1,12 +1,8 @@
-import { fileURLToPath } from "node:url";
 import { withSentryConfig } from "@sentry/nextjs";
-import { createJiti } from "jiti";
+import type { NextConfig } from "next";
+import "./src/env/server";
 
-const jiti = createJiti(fileURLToPath(import.meta.url));
-export const runtimeENV = await jiti.import("./src/env/server.ts");
-
-/** @type {import('next').NextConfig} */
-const nextConfig = {
+const nextConfig: NextConfig = {
   experimental: {
     typedRoutes: true,
   },

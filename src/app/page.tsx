@@ -1,7 +1,7 @@
-import { MatrixRain } from '@/components/animations/matrix-rain'
-import Link from 'next/link'
+import { MatrixRain } from "@/components/animations/matrix-rain";
+import Link from "next/link";
 
-import { Button } from '@/components/ui/button'
+import { Button } from "@/components/ui/button";
 // import { LoginLink } from '@kinde-oss/kinde-auth-nextjs/components'
 export default function Home() {
   return (
@@ -31,10 +31,10 @@ export default function Home() {
             variant="outline"
             className="mt-6 w-1/3 rounded-full border-2 border-notfound-white bg-matrix-glow px-6 py-6 text-lg text-notfound-white hover:text-red-600"
           >
-            <Link href={'/login'}>Employee Sign In</Link>
+            <Link href={"/login"}>Employee Sign In</Link>
           </Button>
         </div>
       </main>
     </div>
-  )
+  );
 }

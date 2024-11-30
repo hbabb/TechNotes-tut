@@ -1,52 +1,52 @@
-'use client'
+"use client";
 
-import { Button } from '@/components/ui/button'
-import { Form } from '@/components/ui/form'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { useForm } from 'react-hook-form'
+import { Button } from "@/components/ui/button";
+import { Form } from "@/components/ui/form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
 
-import { CheckboxWithLabel } from '@/components/form/CheckboxWithLabel'
-import { InputWithLabel } from '@/components/form/InputWithLabel'
-import { TextAreaWithLabel } from '@/components/form/TextAreaWithLabel'
+import { CheckboxWithLabel } from "@/components/form/CheckboxWithLabel";
+import { InputWithLabel } from "@/components/form/InputWithLabel";
+import { TextAreaWithLabel } from "@/components/form/TextAreaWithLabel";
 
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import type { selectCustomerSchemaType } from '@/lib/schema/customers'
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import type { selectCustomerSchemaType } from "@/lib/schema/customers";
 import {
   insertTicketSchema,
   type insertTicketSchemaType,
   type selectTicketSchemaType,
-} from '@/lib/schema/ticket'
+} from "@/lib/schema/ticket";
 
 type Props = {
-  customer: selectCustomerSchemaType
-  ticket?: selectTicketSchemaType
-}
+  customer: selectCustomerSchemaType;
+  ticket?: selectTicketSchemaType;
+};
 
 export default function TicketForm({ customer, ticket }: Props) {
   const defaultValues: insertTicketSchemaType = {
-    id: ticket?.id ?? '(New)',
+    id: ticket?.id ?? "(New)",
     customerId: ticket?.customerId ?? customer.id,
-    title: ticket?.title ?? '',
-    description: ticket?.description ?? '',
+    title: ticket?.title ?? "",
+    description: ticket?.description ?? "",
     completed: ticket?.completed ?? false,
-    tech: ticket?.tech ?? 'new-ticket@example.com',
-  }
+    tech: ticket?.tech ?? "new-ticket@example.com",
+  };
 
   const form = useForm<insertTicketSchemaType>({
-    mode: 'onBlur',
+    mode: "onBlur",
     resolver: zodResolver(insertTicketSchema),
     defaultValues,
-  })
+  });
 
   async function submitForm(data: insertTicketSchemaType) {
-    console.log(data)
+    console.log(data);
   }
 
   return (
     <Card className="before:-inset-px after:-inset-px after:-z-10 relative mt-6 rounded-lg border bg-background/95 p-6 shadow-lg backdrop-blur before:absolute before:rounded-lg before:bg-gradient-to-b before:from-primary/20 before:to-primary/0 before:shadow-lg after:absolute after:rounded-lg after:bg-gradient-to-b after:from-primary/20 after:to-primary/0 after:blur-md supports-[backdrop-filter]:bg-background/60 dark:border-primary/20 dark:bg-background/80 dark:shadow-primary/10 dark:after:from-primary/30 dark:before:from-primary/30">
       <CardHeader className="px-0">
-        <CardTitle className="font-bold text-2xl text-matrix-dark dark:text-matrix-glow">
-          {ticket?.id ? `Edit Ticket # ${ticket.id}` : 'New Ticket Form'}
+        <CardTitle className="font-bold text-2xl text-matrix dark:text-matrix-glow">
+          {ticket?.id ? `Edit Ticket # ${ticket.id}` : "New Ticket Form"}
         </CardTitle>
       </CardHeader>
       <CardContent className="px-0">
@@ -124,5 +124,5 @@ export default function TicketForm({ customer, ticket }: Props) {
         </Form>
       </CardContent>
     </Card>
-  )
+  );
 }

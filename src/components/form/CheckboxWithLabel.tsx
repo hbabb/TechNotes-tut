@@ -1,15 +1,15 @@
-'use client'
+"use client";
 
-import { FormControl, FormField, FormItem, FormLabel } from '@/components/ui/form'
-import { useFormContext } from 'react-hook-form'
-import { Checkbox } from '../ui/checkbox'
+import { FormControl, FormField, FormItem, FormLabel } from "@/components/ui/form";
+import { useFormContext } from "react-hook-form";
+import { Checkbox } from "../ui/checkbox";
 
 type Props<S> = {
-  fieldTitle: string
-  nameInSchema: keyof S & string
-  message: string
-  disabled?: boolean
-}
+  fieldTitle: string;
+  nameInSchema: keyof S & string;
+  message: string;
+  disabled?: boolean;
+};
 
 export function CheckboxWithLabel<S>({
   fieldTitle,
@@ -17,7 +17,7 @@ export function CheckboxWithLabel<S>({
   message,
   disabled = false,
 }: Props<S>) {
-  const form = useFormContext()
+  const form = useFormContext();
 
   return (
     <FormField
@@ -47,5 +47,5 @@ export function CheckboxWithLabel<S>({
         </FormItem>
       )}
     />
-  )
+  );
 }

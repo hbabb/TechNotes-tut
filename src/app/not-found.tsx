@@ -1,11 +1,11 @@
-import { Button } from '@/components/ui/button'
-import { MoveLeft } from 'lucide-react'
-import Image from 'next/image'
-import Link from 'next/link'
+import { Button } from "@/components/ui/button";
+import { MoveLeft } from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
 
 export const metadata = {
-  title: 'Page Not Found',
-}
+  title: "Page Not Found",
+};
 
 export default function NotFound() {
   return (
@@ -41,5 +41,5 @@ export default function NotFound() {
         </div>
       </main>
     </div>
-  )
+  );
 }

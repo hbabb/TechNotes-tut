@@ -1,10 +1,10 @@
-import { Button } from '@/components/ui/button'
-import { FastForward, Rewind } from 'lucide-react'
-import Link from 'next/link'
+import { Button } from "@/components/ui/button";
+import { FastForward, Rewind } from "lucide-react";
+import Link from "next/link";
 
 export const metadata = {
-  title: 'Customers',
-}
+  title: "Customers",
+};
 
 export default function Customers() {
   return (
@@ -32,5 +32,5 @@ export default function Customers() {
         </Button>
       </div>
     </main>
-  )
+  );
 }
