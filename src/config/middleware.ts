@@ -1,5 +1,5 @@
-import { withAuth } from '@kinde-oss/kinde-auth-nextjs/middleware'
-import type { NextRequest } from 'next/server'
+import { withAuth } from "@kinde-oss/kinde-auth-nextjs/middleware";
+import type { NextRequest } from "next/server";
 
 export default withAuth(
   async function middleware(_request: NextRequest) {
@@ -8,7 +8,7 @@ export default withAuth(
   {
     isReturnToCurrentPage: true,
   },
-)
+);
 
 export const config = {
   matcher: [
@@ -24,6 +24,6 @@ export const config = {
      * - login
      * - homepage (represented with $ after beginning /)
      */
-    '/((?!api|_next/static|_next/image|auth|favicon.ico|robots.txt|images|login|$).*)',
+    "/((?!api|_next/static|_next/image|auth|favicon.ico|robots.txt|images|login|$).*)",
   ],
-}
+};
