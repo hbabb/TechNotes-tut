@@ -3,7 +3,6 @@
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Card, CardHeader, CircularProgress } from "@nextui-org/react";
 import { useForm } from "react-hook-form";
 
 import { CheckboxWithLabel } from "@/components/form/CheckboxWithLabel";
@@ -15,7 +14,6 @@ import { useKindeBrowserClient } from "@kinde-oss/kinde-auth-nextjs";
 
 import { StatesArray } from "@/constants/StatesArray";
 
-import { CardContent, CardTitle } from "@/components/ui/card";
 import {
   insertCustomerSchema,
   type insertCustomerSchemaType,
@@ -29,8 +27,6 @@ type Props = {
 export default function CustomerForm({ customer }: Props) {
   const { getPermission, isLoading } = useKindeBrowserClient();
   const isManager = !isLoading && getPermission("manager")?.isGranted;
-  // const permObj = getPermissions();
-  // const isAuthorized = !isLoading && permObj.permissions.some(perm => perm === 'manager' || perm === 'admin');
 
   const defaultValues: insertCustomerSchemaType = {
     id: customer?.id ?? 0,
@@ -58,118 +54,87 @@ export default function CustomerForm({ customer }: Props) {
   }
 
   return (
-    <Card className="before:-inset-px after:-inset-px after:-z-10 relative mt-6 rounded-lg border bg-background/95 p-6 shadow-lg backdrop-blur before:absolute before:rounded-lg before:bg-gradient-to-b before:from-primary/20 before:to-primary/0 before:shadow-lg after:absolute after:rounded-lg after:bg-gradient-to-b after:from-primary/20 after:to-primary/0 after:blur-md supports-[backdrop-filter]:bg-background/60 dark:border-primary/20 dark:bg-background/80 dark:shadow-primary/10 dark:after:from-primary/30 dark:before:from-primary/30">
-      <CardHeader className="px-0">
-        <CardTitle className="font-bold text-2xl text-matrix-dark dark:text-matrix-glow">
+    <div className="flex flex-col gap-1 sm:px-8">
+      <div>
+        <h2 className="font-bold text-2xl">
           {customer?.id ? "Edit" : "New"} Customer {customer?.id ? `#${customer.id}` : "Form"}
-        </CardTitle>
-      </CardHeader>
-      <CardContent className="px-0">
-        <Form {...form}>
-          <form
-            onSubmit={form.handleSubmit(submitForm)}
-            className="flex flex-col gap-4 text-matrix md:flex-row md:gap-8 dark:text-matrix"
-          >
-            <div className="flex w-full max-w-xs flex-col gap-4">
-              <InputWithLabel<insertCustomerSchemaType>
-                fieldTitle="First Name"
-                nameInSchema="firstName"
-                className="border-matrix/30 bg-matrix-dark transition-all duration-200 focus-within:border-matrix focus-within:ring-1 focus-within:ring-matrix"
-              />
+        </h2>
+      </div>
+      <Form {...form}>
+        <form
+          onSubmit={form.handleSubmit(submitForm)}
+          className="flex flex-col gap-4 md:flex-row md:gap-8"
+        >
+          <div className="flex w-full max-w-xs flex-col gap-4">
+            <InputWithLabel<insertCustomerSchemaType>
+              fieldTitle="First Name"
+              nameInSchema="firstName"
+            />
 
-              <InputWithLabel<insertCustomerSchemaType>
-                fieldTitle="Last Name"
-                nameInSchema="lastName"
-                className="border-matrix/30 bg-matrix-dark transition-all duration-200 focus-within:border-matrix focus-within:ring-1 focus-within:ring-matrix"
-              />
+            <InputWithLabel<insertCustomerSchemaType>
+              fieldTitle="Last Name"
+              nameInSchema="lastName"
+            />
 
-              <InputWithLabel<insertCustomerSchemaType>
-                fieldTitle="Address 1"
-                nameInSchema="address1"
-                className="border-matrix/30 bg-matrix-dark transition-all duration-200 focus-within:border-matrix focus-within:ring-1 focus-within:ring-matrix"
-              />
+            <InputWithLabel<insertCustomerSchemaType>
+              fieldTitle="Address 1"
+              nameInSchema="address1"
+            />
 
-              <InputWithLabel<insertCustomerSchemaType>
-                fieldTitle="Address 2"
-                nameInSchema="address2"
-                className="border-matrix/30 bg-matrix-dark transition-all duration-200 focus-within:border-matrix focus-within:ring-1 focus-within:ring-matrix"
-              />
+            <InputWithLabel<insertCustomerSchemaType>
+              fieldTitle="Address 2"
+              nameInSchema="address2"
+            />
 
-              <InputWithLabel<insertCustomerSchemaType>
-                fieldTitle="City"
-                nameInSchema="city"
-                className="border-matrix/30 bg-matrix-dark transition-all duration-200 focus-within:border-matrix focus-within:ring-1 focus-within:ring-matrix"
-              />
+            <InputWithLabel<insertCustomerSchemaType> fieldTitle="City" nameInSchema="city" />
 
-              <SelectWithLabel<insertCustomerSchemaType>
-                fieldTitle="State"
-                nameInSchema="state"
-                data={StatesArray}
-                className="border-matrix/30 bg-matrix-dark transition-all duration-200 focus-within:border-matrix focus-within:ring-1 focus-within:ring-matrix"
+            <SelectWithLabel<insertCustomerSchemaType>
+              fieldTitle="State"
+              nameInSchema="state"
+              data={StatesArray}
+            />
+          </div>
+
+          <div className="flex w-full max-w-xs flex-col gap-4">
+            <InputWithLabel<insertCustomerSchemaType> fieldTitle="Zip Code" nameInSchema="zip" />
+
+            <InputWithLabel<insertCustomerSchemaType> fieldTitle="Email" nameInSchema="email" />
+
+            <InputWithLabel<insertCustomerSchemaType> fieldTitle="Phone" nameInSchema="phone" />
+
+            <TextAreaWithLabel<insertCustomerSchemaType>
+              fieldTitle="Notes"
+              nameInSchema="notes"
+              className="h-40"
+            />
+
+            {isLoading ? (
+              <p>Loading...</p>
+            ) : isManager && customer?.id ? (
+              <CheckboxWithLabel<insertCustomerSchemaType>
+                fieldTitle="Active"
+                nameInSchema="active"
+                message="Yes"
               />
+            ) : null}
+
+            <div className="flex gap-2">
+              <Button type="submit" className="w-3/4" variant="default" title="Save">
+                Save
+              </Button>
+
+              <Button
+                type="button"
+                variant="destructive"
+                title="Reset"
+                onClick={() => form.reset(defaultValues)}
+              >
+                Reset
+              </Button>
             </div>
-
-            <div className="flex w-full max-w-xs flex-col gap-4">
-              <InputWithLabel<insertCustomerSchemaType>
-                fieldTitle="Zip Code"
-                nameInSchema="zip"
-                className="border-matrix/30 bg-matrix-dark transition-all duration-200 focus-within:border-matrix focus-within:ring-1 focus-within:ring-matrix"
-              />
-
-              <InputWithLabel<insertCustomerSchemaType>
-                fieldTitle="Email"
-                nameInSchema="email"
-                className="border-matrix/30 bg-matrix-dark transition-all duration-200 focus-within:border-matrix focus-within:ring-1 focus-within:ring-matrix"
-              />
-
-              <InputWithLabel<insertCustomerSchemaType>
-                fieldTitle="Phone"
-                nameInSchema="phone"
-                className="border-matrix/30 bg-matrix-dark transition-all duration-200 focus-within:border-matrix focus-within:ring-1 focus-within:ring-matrix"
-              />
-
-              <TextAreaWithLabel<insertCustomerSchemaType>
-                fieldTitle="Notes"
-                nameInSchema="notes"
-                className="h-40 border-matrix/30 bg-matrix-dark transition-all duration-200 focus-within:border-matrix focus-within:ring-1 focus-within:ring-matrix"
-              />
-
-              {isLoading ? (
-                <div>
-                  <CircularProgress label="Loading..." color="success" aria-label="Loading..." />
-                </div>
-              ) : isManager && customer?.id ? (
-                <CheckboxWithLabel<insertCustomerSchemaType>
-                  fieldTitle="Active"
-                  nameInSchema="active"
-                  message="Yes"
-                />
-              ) : null}
-
-              <div className="flex gap-2">
-                <Button
-                  type="submit"
-                  className="w-3/4 bg-matrix font-bold text-black transition-colors duration-200 hover:bg-matrix/80"
-                  variant="default"
-                  title="Save"
-                >
-                  Save
-                </Button>
-
-                <Button
-                  type="button"
-                  className="bg-red-900/80 text-white transition-colors duration-200 hover:bg-red-900"
-                  variant="destructive"
-                  title="Reset"
-                  onClick={() => form.reset(defaultValues)}
-                >
-                  Reset
-                </Button>
-              </div>
-            </div>
-          </form>
-        </Form>
-      </CardContent>
-    </Card>
+          </div>
+        </form>
+      </Form>
+    </div>
   );
 }

@@ -20,7 +20,8 @@ export function NavButton({ icon: Icon, label, href }: Props) {
       asChild
     >
       {href ? (
-        <Link href={href}>
+        // biome-ignore lint/suspicious/noExplicitAny: <explanation>
+        <Link href={href as any}>
           <Icon />
         </Link>
       ) : (
