@@ -17,6 +17,12 @@ import {
   type selectTicketSchemaType,
 } from "@/lib/schema/ticket";
 
+import { saveTicketAction } from "@/app/actions/saveTicketAction";
+import { DisplayServerActionResponse } from "@/components/DisplayServerActionResponse";
+import { useToast } from "@/hooks/use-toast";
+import { LoaderCircle } from "lucide-react";
+import { useAction } from "next-safe-action/hooks";
+
 type Props = {
   customer: selectCustomerSchemaType;
   ticket?: selectTicketSchemaType;
@@ -29,6 +35,8 @@ type Props = {
 
 export default function TicketForm({ customer, ticket, techs, isEditable = true }: Props) {
   const isManager = Array.isArray(techs);
+
+  const { toast } = useToast();
 
   const defaultValues: insertTicketSchemaType = {
     id: ticket?.id ?? "(New)",
@@ -45,12 +53,38 @@ export default function TicketForm({ customer, ticket, techs, isEditable = true 
     defaultValues,
   });
 
+  const {
+    execute: executeSave,
+    result: saveResult,
+    isPending: isSaving,
+    reset: resetSaveAction,
+  } = useAction(saveTicketAction, {
+    onSuccess({ data }) {
+      if (data?.message) {
+        toast({
+          variant: "default",
+          title: "Success! 🎉",
+          description: data.message,
+        });
+      }
+    },
+    // biome-ignore lint/correctness/noUnusedVariables: <explanation>
+    onError({ error }) {
+      toast({
+        variant: "destructive",
+        title: "❌ Error",
+        description: "Save Failed",
+      });
+    },
+  });
+
   async function submitForm(data: insertTicketSchemaType) {
-    console.log(data);
+    executeSave(data);
   }
 
   return (
     <div className="flex flex-col gap-1 sm:px-8">
+      <DisplayServerActionResponse result={saveResult} />
       <div>
         <h2 className="font-bold text-2xl">
           {ticket?.id && isEditable
@@ -125,15 +159,30 @@ export default function TicketForm({ customer, ticket, techs, isEditable = true 
 
             {isEditable ? (
               <div className="flex gap-2">
-                <Button type="submit" className="w-3/4" variant="default" title="Save">
-                  Save
+                <Button
+                  type="submit"
+                  className="w-3/4"
+                  variant="default"
+                  title="Save"
+                  disabled={isSaving}
+                >
+                  {isSaving ? (
+                    <>
+                      <LoaderCircle className="animate-spin" /> Saving
+                    </>
+                  ) : (
+                    "Save"
+                  )}
                 </Button>
 
                 <Button
                   type="button"
                   variant="destructive"
                   title="Reset"
-                  onClick={() => form.reset(defaultValues)}
+                  onClick={() => {
+                    form.reset(defaultValues);
+                    resetSaveAction();
+                  }}
                 >
                   Reset
                 </Button>

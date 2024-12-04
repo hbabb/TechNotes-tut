@@ -20,6 +20,12 @@ import {
   type selectCustomerSchemaType,
 } from "@/lib/schema/customers";
 
+import { saveCustomerAction } from "@/app/actions/saveCustomerAction";
+import { DisplayServerActionResponse } from "@/components/DisplayServerActionResponse";
+import { useToast } from "@/hooks/use-toast";
+import { LoaderCircle } from "lucide-react";
+import { useAction } from "next-safe-action/hooks";
+
 type Props = {
   customer?: selectCustomerSchemaType;
 };
@@ -27,6 +33,8 @@ type Props = {
 export default function CustomerForm({ customer }: Props) {
   const { getPermission, isLoading } = useKindeBrowserClient();
   const isManager = !isLoading && getPermission("manager")?.isGranted;
+
+  const { toast } = useToast();
 
   const defaultValues: insertCustomerSchemaType = {
     id: customer?.id ?? 0,
@@ -49,12 +57,40 @@ export default function CustomerForm({ customer }: Props) {
     defaultValues,
   });
 
+  const {
+    execute: executeSave,
+    result: saveResult,
+    isExecuting: isSaving,
+    reset: resetSaveAction,
+  } = useAction(saveCustomerAction, {
+    onSuccess({ data }) {
+      if (data?.message) {
+        toast({
+          variant: "default",
+          title: "Success! 🎉",
+          description: data.message,
+        });
+      }
+    },
+
+    // biome-ignore lint/correctness/noUnusedVariables: <explanation>
+    onError({ error }) {
+      toast({
+        variant: "destructive",
+        title: "❌ Error",
+        description: "Save Failed",
+      });
+    },
+  });
+
   async function submitForm(data: insertCustomerSchemaType) {
-    console.log(data);
+    // console.log(data);
+    executeSave(data);
   }
 
   return (
     <div className="flex flex-col gap-1 sm:px-8">
+      <DisplayServerActionResponse result={saveResult} />
       <div>
         <h2 className="font-bold text-2xl">
           {customer?.id ? "Edit" : "New"} Customer {customer?.id ? `#${customer.id}` : "Form"}
@@ -119,15 +155,30 @@ export default function CustomerForm({ customer }: Props) {
             ) : null}
 
             <div className="flex gap-2">
-              <Button type="submit" className="w-3/4" variant="default" title="Save">
-                Save
+              <Button
+                type="submit"
+                className="w-3/4"
+                variant="default"
+                title="Save"
+                disabled={isSaving}
+              >
+                {isSaving ? (
+                  <>
+                    <LoaderCircle className="animate-spin" /> Saving
+                  </>
+                ) : (
+                  "Save"
+                )}
               </Button>
 
               <Button
                 type="button"
                 variant="destructive"
                 title="Reset"
-                onClick={() => form.reset(defaultValues)}
+                onClick={() => {
+                  form.reset(defaultValues);
+                  resetSaveAction();
+                }}
               >
                 Reset
               </Button>

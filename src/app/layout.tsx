@@ -1,4 +1,5 @@
 import { ThemeProvider } from "@/components/layout/theme-provider";
+import { Toaster } from "@/components/ui/toaster";
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
@@ -58,6 +59,7 @@ export default async function RootLayout({
           disableTransitionOnChange
         >
           {children}
+          <Toaster />
         </ThemeProvider>
       </body>
     </html>
