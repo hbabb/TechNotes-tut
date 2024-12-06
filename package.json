@@ -24,7 +24,9 @@
     "format": "biome check --write src",
     "git": "git config --local core.hooksPath .githooks",
     "db:generate": "drizzle-kit generate",
-    "db:migrate": "tsx ./src/db/migrate.ts"
+    "db:migrate": "tsx ./src/db/migrate.ts",
+    "test": "jest",
+    "test:watch": "jest --watch"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.1",
@@ -63,6 +65,10 @@
     "@biomejs/biome": "^1.9.4",
     "@commitlint/cli": "^19.6.0",
     "@commitlint/config-conventional": "^19.6.0",
+    "@testing-library/dom": "^10.4.0",
+    "@testing-library/jest-dom": "^6.6.3",
+    "@testing-library/react": "^16.1.0",
+    "@testing-library/user-event": "^14.5.2",
     "@types/node": "^22",
     "@types/react": "^19",
     "@types/react-dom": "^19",
@@ -70,8 +76,12 @@
     "cross-env": "^7.0.3",
     "dotenv": "^16.4.7",
     "drizzle-kit": "^0.29.1",
+    "jest": "^29.7.0",
+    "jest-environment-jsdom": "^29.7.0",
     "postcss": "^8",
     "tailwindcss": "^3.4.16",
+    "ts-jest": "^29.2.5",
+    "ts-node": "^10.9.2",
     "tsx": "^4.19.2",
     "typescript": "^5"
   },

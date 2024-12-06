@@ -11,7 +11,7 @@ export default function LoginPage() {
   return (
     <main className="flex h-dvh flex-col items-center justify-center gap-6 border-2 border-matrix bg-black bg-center bg-cover bg-home-img p-4 text-4xl">
       <div className="mx-auto flex w-4/5 flex-col gap-6 rounded-xl border border-green-500/20 bg-black/40 bg-gradient-to-br from-green-500/[0.15] to-black/50 p-6 font-code shadow-[0_0_15px_rgba(0,255,0,0.07)] ring-1 ring-green-500/30 backdrop-blur-md sm:max-w-96 sm:text-2xl">
-        <h1 className="text-center">
+        <h1 className="text-center text-white">
           Computer Repair Shop
           <br />
           Employee Login
