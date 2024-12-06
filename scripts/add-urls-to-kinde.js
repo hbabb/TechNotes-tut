@@ -1,4 +1,4 @@
-const { env } = require("./src/env/server");
+import { env } from "./src/env/server";
 
 async function getAuthToken() {
   try {
