@@ -17,6 +17,8 @@ async function getAuthToken() {
     });
 
     if (!response.ok) {
+      const errorData = await response.json();
+      console.error("Error getting auth token:", errorData);
       throw new Error(`Failed to get auth token: ${response.statusText}`);
     }
 
@@ -46,13 +48,15 @@ async function addLogoutUrlToKinde(token) {
     );
 
     if (!response.ok) {
+      const errorData = await response.json();
+      console.error("Error adding logout URL to Kinde:", errorData);
       throw new Error(`Failed to add logout URL to Kinde: ${response.statusText}`);
     }
 
     const responseData = await response.json();
     console.log(
       `SUCCESS: Logout URL added to Kinde: ${process.env.VERCEL_URL}`,
-      responseData`${JSON.stringify(responseData)}`,
+      JSON.stringify(responseData),
     );
   } catch (error) {
     console.error("Failed to add logout URL to Kinde", JSON.stringify(error.message));
@@ -78,13 +82,15 @@ async function addCallbackUrlToKinde(token) {
     );
 
     if (!response.ok) {
+      const errorData = await response.json();
+      console.error("Error adding callback URL to Kinde:", errorData);
       throw new Error(`Failed to add callback URL to Kinde: ${response.statusText}`);
     }
 
     const responseData = await response.json();
     console.log(
       `SUCCESS: Callback URL added to Kinde: ${process.env.VERCEL_URL}/api/auth/kinde_callback`,
-      responseData`${JSON.stringify(responseData)}`,
+      JSON.stringify(responseData),
     );
   } catch (error) {
     console.error("Failed to add callback URL to Kinde", JSON.stringify(error.message));
