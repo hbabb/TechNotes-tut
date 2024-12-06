@@ -4,6 +4,7 @@ import Link from "next/link";
 
 import { ModeToggle } from "@/components/layout/ModeToggle";
 import { NavButton } from "@/components/layout/NavButton";
+import { NavButtonMenu } from "@/components/layout/NavButtonMenu";
 import { Button } from "@/components/ui/button";
 
 export function Header() {
@@ -11,7 +12,7 @@ export function Header() {
     <header className="sticky top-0 z-20 h-12 animate-slide border-matrix-dark border-b-2 p-2 dark:border-matrix-glow">
       <div className="flex h-8 w-full items-center justify-between">
         <div className="flex items-center gap-2">
-          <NavButton icon={HomeIcon} label="Home" href="/home" />
+          <NavButton icon={HomeIcon} label="Dashboard" href="/dashboard" />
 
           <Link
             href="/dashboard"
@@ -25,7 +26,14 @@ export function Header() {
         <div className="flex items-center">
           <NavButton icon={File} label="Tickets" href="/tickets" />
 
-          <NavButton icon={UsersRound} label="Customers" href="/customers" />
+          <NavButtonMenu
+            icon={UsersRound}
+            label="Customers Menu"
+            choices={[
+              { title: "Search Customers", href: "/customers" },
+              { title: "New Customer", href: "/customers/form" },
+            ]}
+          />
 
           <ModeToggle />
 

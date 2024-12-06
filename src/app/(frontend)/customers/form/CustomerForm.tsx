@@ -21,7 +21,7 @@ import {
 } from "@/lib/schema/customers";
 
 import { saveCustomerAction } from "@/app/actions/saveCustomerAction";
-import { DisplayServerActionResponse } from "@/components/DisplayServerActionResponse";
+import { DisplayServerActionResponse } from "@/components/actions/DisplayServerActionResponse";
 import { useToast } from "@/hooks/use-toast";
 import { LoaderCircle } from "lucide-react";
 import { useAction } from "next-safe-action/hooks";
