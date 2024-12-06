@@ -50,9 +50,12 @@ async function addLogoutUrlToKinde(token) {
     }
 
     const responseData = await response.json();
-    console.log(`SUCCESS: Logout URL added to Kinde: ${process.env.VERCEL_URL}`, responseData);
+    console.log(
+      `SUCCESS: Logout URL added to Kinde: ${process.env.VERCEL_URL}`,
+      responseData`${JSON.stringify(responseData)}`,
+    );
   } catch (error) {
-    console.error("Failed to add logout URL to Kinde", error);
+    console.error("Failed to add logout URL to Kinde", error`${JSON.stringify(error.message)}`);
     throw error;
   }
 }
@@ -81,10 +84,10 @@ async function addCallbackUrlToKinde(token) {
     const responseData = await response.json();
     console.log(
       `SUCCESS: Callback URL added to Kinde: ${process.env.VERCEL_URL}/api/auth/kinde_callback`,
-      responseData,
+      responseData`${JSON.stringify(responseData)}`,
     );
   } catch (error) {
-    console.error("Failed to add callback URL to Kinde", error);
+    console.error("Failed to add callback URL to Kinde", error`${JSON.stringify(error.message)}`);
     throw error;
   }
 }
@@ -93,10 +96,13 @@ async function addCallbackUrlToKinde(token) {
   if (process.env.VERCEL === 1) {
     try {
       const authToken = await getAuthToken();
+      console.log("AUTH_TOKEN: ", authToken);
       await addCallbackUrlToKinde(authToken);
       await addLogoutUrlToKinde(authToken);
     } catch (error) {
       console.error("Script failed:", error);
     }
+  } else {
+    console.log("Not running in Vercel environment");
   }
 })();
