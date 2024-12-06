@@ -22,8 +22,8 @@ export const env = createEnv({
     KINDE_POST_LOGOUT_REDIRECT_URL: z.string().url(),
     KINDE_POST_LOGIN_REDIRECT_URL: z.string().url(),
     KINDE_DOMAIN: z.string().url(),
-    KINDE_MANAGEMENT_CLIENT_ID: z.string(),
-    KINDE_MANAGEMENT_CLIENT_SECRET: z.string(),
+    KINDE_M2M_CLIENT_ID: z.string(),
+    KINDE_M2M_CLIENT_SECRET: z.string(),
     DATABASE_URL: z.string().url(),
   },
   onValidationError: (error: ZodError) => {
