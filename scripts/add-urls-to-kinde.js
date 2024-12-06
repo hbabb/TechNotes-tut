@@ -40,7 +40,7 @@ async function addLogoutUrlToKinde(token) {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          urls: [`https://${process.env.VERCEL_URL}`],
+          urls: [`https://${process.env.VERCEL_URL}/login`],
         }),
       },
     );
@@ -55,7 +55,7 @@ async function addLogoutUrlToKinde(token) {
       responseData`${JSON.stringify(responseData)}`,
     );
   } catch (error) {
-    console.error("Failed to add logout URL to Kinde", error`${JSON.stringify(error.message)}`);
+    console.error("Failed to add logout URL to Kinde", JSON.stringify(error.message));
     throw error;
   }
 }
@@ -87,7 +87,7 @@ async function addCallbackUrlToKinde(token) {
       responseData`${JSON.stringify(responseData)}`,
     );
   } catch (error) {
-    console.error("Failed to add callback URL to Kinde", error`${JSON.stringify(error.message)}`);
+    console.error("Failed to add callback URL to Kinde", JSON.stringify(error.message));
     throw error;
   }
 }
