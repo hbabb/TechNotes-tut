@@ -1,3 +1,5 @@
+console.log("VERCEL_URL: ", process.env.VERCEL_URL);
+
 async function getAuthToken() {
   try {
     const response = await fetch(`${process.env.KINDE_ISSUER_URL}/oauth2/token`, {
