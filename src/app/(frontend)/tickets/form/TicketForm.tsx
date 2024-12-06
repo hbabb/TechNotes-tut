@@ -18,7 +18,7 @@ import {
 } from "@/lib/schema/ticket";
 
 import { saveTicketAction } from "@/app/actions/saveTicketAction";
-import { DisplayServerActionResponse } from "@/components/DisplayServerActionResponse";
+import { DisplayServerActionResponse } from "@/components/actions/DisplayServerActionResponse";
 import { useToast } from "@/hooks/use-toast";
 import { LoaderCircle } from "lucide-react";
 import { useAction } from "next-safe-action/hooks";

@@ -1,11 +1,5 @@
-export const metadata = {
-  title: "Employee Dashboard",
-};
+import { redirect } from "next/navigation";
 
 export default function Dashboard() {
-  return (
-    <div>
-      <h2>Employee Dashboard Page</h2>
-    </div>
-  );
+  redirect("/tickets");
 }
