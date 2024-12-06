@@ -1,18 +1,16 @@
-import { env } from "./src/env/server";
-
 async function getAuthToken() {
   try {
-    const response = await fetch(`${env.KINDE_ISSUER_URL}/oauth2/token`, {
+    const response = await fetch(`${process.env.KINDE_ISSUER_URL}/oauth2/token`, {
       method: "POST",
       headers: {
         "Content-Type": "application/x-www-form-urlencoded",
         Accept: "application/json",
       },
       body: new URLSearchParams({
-        client_id: env.KINDE_M2M_CLIENT_ID,
-        client_secret: env.KINDE_M2M_CLIENT_SECRET,
+        client_id: process.env.KINDE_M2M_CLIENT_ID,
+        client_secret: process.env.KINDE_M2M_CLIENT_SECRET,
         grant_type: "client_credentials",
-        audience: `${env.KINDE_ISSUER_URL}/api`,
+        audience: `${process.env.KINDE_ISSUER_URL}/api`,
       }),
     });
 
@@ -31,7 +29,7 @@ async function getAuthToken() {
 async function addLogoutUrlToKinde(token) {
   try {
     const response = await fetch(
-      `${env.KINDE_ISSUER_URL}/api/v1/applications/${env.KINDE_CLIENT_ID}/auth_logout_urls`,
+      `${process.env.KINDE_ISSUER_URL}/api/v1/applications/${process.env.KINDE_CLIENT_ID}/auth_logout_urls`,
       {
         method: "POST",
         headers: {
@@ -40,19 +38,19 @@ async function addLogoutUrlToKinde(token) {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          urls: [`https://${process.env.VERCEL_URL}/logout`],
+          urls: [`https://${process.env.VERCEL_URL}`],
         }),
       },
     );
 
     if (!response.ok) {
-      throw new Error(`Failed to add logout URL: ${response.statusText}`);
+      throw new Error(`Failed to add logout URL to Kinde: ${response.statusText}`);
     }
 
     const responseData = await response.json();
     console.log(`SUCCESS: Logout URL added to Kinde: ${process.env.VERCEL_URL}`, responseData);
   } catch (error) {
-    console.error("Error adding logout URL to Kinde:", error);
+    console.error("Failed to add logout URL to Kinde", error);
     throw error;
   }
 }
@@ -60,7 +58,7 @@ async function addLogoutUrlToKinde(token) {
 async function addCallbackUrlToKinde(token) {
   try {
     const response = await fetch(
-      `${env.KINDE_ISSUER_URL}/api/v1/applications/${env.KINDE_CLIENT_ID}/auth_redirect_urls`,
+      `${process.env.KINDE_ISSUER_URL}/api/v1/applications/${process.env.KINDE_CLIENT_ID}/auth_redirect_urls`,
       {
         method: "POST",
         headers: {
@@ -90,7 +88,7 @@ async function addCallbackUrlToKinde(token) {
 }
 
 (async () => {
-  if (env.VERCEL === 1) {
+  if (process.env.VERCEL === 1) {
     try {
       const authToken = await getAuthToken();
       await addCallbackUrlToKinde(authToken);
