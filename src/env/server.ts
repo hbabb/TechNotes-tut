@@ -8,16 +8,16 @@ export const env = createEnv({
   server: {
     NODE_ENV: z.enum(["development", "test", "production"]),
     SENTRY_AUTH_TOKEN: z.string(),
-    SENTRY_SUPPRESS_TURBOPACK_WARNING: z.coerce.number(),
-    CI: z
-      .string()
-      .refine((s) => s === "true" || s === "false")
-      .transform((s) => s === "true")
-      .optional(),
+    // SENTRY_SUPPRESS_TURBOPACK_WARNING: z.coerce.number(),
+    // CI: z
+    //   .string()
+    //   .refine((s) => s === "true" || s === "false")
+    //   .transform((s) => s === "true")
+    //   .optional(),
     KINDE_CLIENT_ID: z.string(),
     KINDE_CLIENT_SECRET: z.string(),
     KINDE_ISSUER_URL: z.string().url(),
-    KINDE_SITE_URL: z.string().url(),
+    // KINDE_SITE_URL: z.string().url(),
     KINDE_POST_LOGOUT_REDIRECT_URL: z.string().url(),
     KINDE_POST_LOGIN_REDIRECT_URL: z.string().url(),
     KINDE_DOMAIN: z.string().url(),
