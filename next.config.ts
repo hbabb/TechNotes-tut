@@ -8,7 +8,7 @@ const nextConfig: NextConfig = {
     typedRoutes: true,
   },
   env: {
-    KINDE_SITE_URL: env.KINDE_SITE_URL ?? `https://${process.env.VERCEL_URL}`,
+    KINDE_SITE_URL: `https://${process.env.VERCEL_URL}`,
     KINDE_POST_LOGOUT_REDIRECT_URL:
       env.KINDE_POST_LOGOUT_REDIRECT_URL ?? `https://${process.env.VERCEL_URL}/login`,
     KINDE_POST_LOGIN_REDIRECT_URL:
