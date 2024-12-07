@@ -25,8 +25,7 @@
     "git": "git config --local core.hooksPath .githooks",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "tsx ./src/db/migrate.ts",
-    "test": "jest",
-    "test:watch": "jest --watch"
+    "postbuild": "node ./scripts/add-urls-to-kinde.js"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.1",
@@ -84,8 +83,5 @@
     "ts-node": "^10.9.2",
     "tsx": "^4.19.2",
     "typescript": "^5"
-  },
-  "engines": {
-    "node": ">=20.0.0"
   }
 }
