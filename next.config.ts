@@ -1,18 +1,17 @@
 import { withSentryConfig } from "@sentry/nextjs";
 import type { NextConfig } from "next";
 import "./src/env/server";
-import { env } from "./src/env/server";
 
 const nextConfig: NextConfig = {
   experimental: {
     typedRoutes: true,
   },
   env: {
-    KINDE_SITE_URL: env.KINDE_SITE_URL ?? `https://${process.env.VERCEL_URL}`,
+    KINDE_SITE_URL: process.env.KINDE_SITE_URL ?? `https://${process.env.VERCEL_URL}`,
     KINDE_POST_LOGOUT_REDIRECT_URL:
-      env.KINDE_POST_LOGOUT_REDIRECT_URL ?? `https://${process.env.VERCEL_URL}/login`,
+      process.env.KINDE_POST_LOGOUT_REDIRECT_URL ?? `https://${process.env.VERCEL_URL}/login`,
     KINDE_POST_LOGIN_REDIRECT_URL:
-      env.KINDE_POST_LOGIN_REDIRECT_URL ?? `https://${process.env.VERCEL_URL}/dashboard`,
+      process.env.KINDE_POST_LOGIN_REDIRECT_URL ?? `https://${process.env.VERCEL_URL}/dashboard`,
   },
 };
 
