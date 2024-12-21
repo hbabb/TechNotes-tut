@@ -22,9 +22,9 @@ export default function NotFound() {
             variant="outline"
             className="rounded-full border-2 border-notfound-white bg-transparent px-8 py-6 text-lg text-notfound-white hover:text-red-600"
           >
-            <Link href="/">
+            <Link href="/tickets">
               <MoveLeft />
-              homepage
+              Open Tickets
             </Link>
           </Button>
         </div>

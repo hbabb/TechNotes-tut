@@ -112,8 +112,12 @@ export default async function TicketFormPage({
         const { users } = await Users.getUsers();
 
         const techs = users
-          ? // biome-ignore lint/style/noNonNullAssertion: <explanation>
-            users.map((user) => ({ id: user.email!, description: user.email! }))
+          ? users.map((user) => ({
+              // biome-ignore lint/style/noNonNullAssertion: <explanation>
+              id: user.email?.toLowerCase()!,
+              // biome-ignore lint/style/noNonNullAssertion: <explanation>
+              description: user.email?.toLowerCase()!,
+            }))
           : [];
 
         return <TicketForm customer={customer} ticket={ticket} techs={techs} />;

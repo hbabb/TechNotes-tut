@@ -3,16 +3,20 @@ import type { Column } from "@tanstack/react-table";
 
 type Props<T> = {
   column: Column<T, unknown>;
+  filteredRows: string[];
 };
 
-export function Filter<T>({ column }: Props<T>) {
+export function Filter<T>({ column, filteredRows }: Props<T>) {
   const columnFilterValue = column.getFilterValue();
 
-  const sortedUniqueValues = Array.from(column.getFacetedUniqueValues().keys()).sort();
+  const uniqueFilteredValues = new Set(filteredRows);
+
+  const sortedUniqueValues = Array.from(uniqueFilteredValues).sort();
 
   return (
     <>
-      <datalist id={`${column.id}list`}>
+      {/* biome-ignore lint/style/useTemplate: <explanation> */}
+      <datalist id={column.id + "list"}>
         {sortedUniqueValues.map((value, i) => (
           <option value={value} key={`${i}-${column.id}`} />
         ))}
@@ -20,11 +24,11 @@ export function Filter<T>({ column }: Props<T>) {
       <DebouncedInput
         type="text"
         value={(columnFilterValue ?? "") as string}
-        // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-        onChange={(value: any) => column.setFilterValue(value)}
-        placeholder={`Search... (${[...column.getFacetedUniqueValues()].filter((arr) => arr[0]).length})`}
+        onChange={(value) => column.setFilterValue(value)}
+        placeholder={`Search... (${uniqueFilteredValues.size})`}
         className="w-full rounded border bg-card shadow"
-        list={`${column.id}list`}
+        // biome-ignore lint/style/useTemplate: <explanation>
+        list={column.id + "list"}
       />
     </>
   );

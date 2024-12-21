@@ -14,10 +14,29 @@ export default async function Customers({
 }) {
   const { searchText } = await searchParams;
 
-  if (!searchText) return <CustomerSearch />;
+  if (!searchText) {
+    // Start Sentry monitor
+    const span = Sentry.startInactiveSpan({
+      name: "getAllCustomers",
+    });
+    const results = await getCustomerSearchResults(""); // Fetch all customers
+    span.end();
 
+    return (
+      <>
+        <CustomerSearch />
+        {results.length ? (
+          <CustomerTable data={results} />
+        ) : (
+          <p className="mt-4">No customers found</p>
+        )}
+      </>
+    );
+  }
+
+  // Start Sentry span for filtered search
   const span = Sentry.startInactiveSpan({
-    name: "getCustomerSearchResults-2",
+    name: "getCustomerSearchResults",
   });
   const results = await getCustomerSearchResults(searchText);
   span.end();
