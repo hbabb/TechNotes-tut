@@ -9,13 +9,13 @@ import { Button } from "@/components/ui/button";
 
 export function Header() {
   return (
-    <header className="sticky top-0 z-20 h-12 animate-slide border-matrix-dark border-b-2 p-2 dark:border-matrix-glow">
+    <header className="sticky top-0 z-20 h-12 animate-slide border-primary border-b-2 p-2">
       <div className="flex h-8 w-full items-center justify-between">
         <div className="flex items-center gap-2">
-          <NavButton icon={HomeIcon} label="Dashboard" href="/dashboard" />
+          <NavButton icon={HomeIcon} label="Open Tickets" href="/tickets" />
 
           <Link
-            href="/dashboard"
+            href="/tickets"
             className="ml-0 flex items-center justify-center gap-2"
             title="Home"
           >

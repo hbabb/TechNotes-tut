@@ -1,28 +1,34 @@
 import { db } from "@/db";
 import { customers } from "@/db/schema";
-import { ilike, or, sql } from "drizzle-orm";
-
-// The fields below were commented out because they are not currently used in the Customers table for search queries. The table columnHeaderArray can be adjusted to add these if needed.
-// The firstName and lastName from ilike are replaced with the sql call and are no longer needed. This allows the search params to search for both the firstName and lastName or parts of them rather than an either/or.
+import { asc, ilike, or, sql } from "drizzle-orm";
 
 export async function getCustomerSearchResults(searchText: string) {
   const results = await db
-    .select()
+    .select({
+      id: customers.id,
+      firstName: customers.firstName,
+      lastName: customers.lastName,
+      email: customers.email,
+      phone: customers.phone,
+      city: customers.city,
+      state: customers.state,
+      zip: customers.zip,
+      active: customers.active,
+    })
     .from(customers)
     .where(
       or(
-        // ilike(customers.firstName, `%${searchText}%`),
-        // ilike(customers.lastName, `%${searchText}%`),
         ilike(customers.email, `%${searchText}%`),
         ilike(customers.phone, `%${searchText}%`),
-        // ilike(customers.address1, `%${searchText}%`),
-        // ilike(customers.address2, `%${searchText}%`),
         ilike(customers.city, `%${searchText}%`),
         ilike(customers.state, `%${searchText}%`),
         ilike(customers.zip, `%${searchText}%`),
-        // ilike(customers.notes, `%${searchText}%`),
         sql`lower(concat(${customers.firstName}, ' ', ${customers.lastName})) LIKE ${`%${searchText.toLowerCase().replace(" ", "%")}%`}`,
       ),
-    );
+    )
+    .orderBy(asc(customers.firstName));
+
   return results;
 }
+
+export type CustomerSearchResultsType = Awaited<ReturnType<typeof getCustomerSearchResults>>;

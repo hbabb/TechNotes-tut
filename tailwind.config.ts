@@ -49,9 +49,9 @@ const config: Config = {
           gray: "#75757A",
         },
         matrix: {
-          DEFAULT: "hsl(123, 100%, 50%)",
-          dark: "hsl(120, 100%, 2%)",
-          glow: "hsla(123, 100%, 50%, 0.5)",
+          DEFAULT: "hsl(var(--primary))",
+          dark: "hsl(var(--muted))",
+          glow: "hsl(var(--primary))",
         },
         transparent: "transparent",
         border: "hsl(var(--border))",
@@ -79,25 +79,34 @@ const config: Config = {
       },
       keyframes: {
         appear: {
-          from: {
+          "0": {
             opacity: "0",
           },
-          to: {
+          "1": {
             opacity: "1",
           },
         },
         slide: {
-          from: {
+          out: {
             transform: "translateX(100%)",
           },
-          to: {
+          in: {
             transform: "translateX(0%)",
           },
         },
+        shimmer: {
+          from: {
+            backgroundPosition: "0 0",
+          },
+          to: {
+            backgroundPosition: "-200% 0",
+          },
+        },
       },
-      animations: {
+      animation: {
         appear: "appear 1s ease-in-out",
         slide: "slide 750ms ease-in-out",
+        shimmer: "shimmer 2s linear infinite",
       },
     },
   },

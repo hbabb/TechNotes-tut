@@ -1,6 +1,4 @@
 "use client";
-
-import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -22,15 +20,23 @@ import {
 
 import { saveCustomerAction } from "@/app/actions/saveCustomerAction";
 import { DisplayServerActionResponse } from "@/components/actions/DisplayServerActionResponse";
+import { MagicButton } from "@/components/layout/MagicButton";
 import { useToast } from "@/hooks/use-toast";
 import { LoaderCircle } from "lucide-react";
 import { useAction } from "next-safe-action/hooks";
+import { useEffect, useState } from "react";
 
 type Props = {
   customer?: selectCustomerSchemaType;
 };
 
 export default function CustomerForm({ customer }: Props) {
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
   const { getPermission, isLoading } = useKindeBrowserClient();
   const isManager = !isLoading && getPermission("manager")?.isGranted;
 
@@ -144,36 +150,68 @@ export default function CustomerForm({ customer }: Props) {
               className="h-40"
             />
 
-            {isLoading ? (
-              <p>Loading...</p>
-            ) : isManager && customer?.id ? (
-              <CheckboxWithLabel<insertCustomerSchemaType>
-                fieldTitle="Active"
-                nameInSchema="active"
-                message="Yes"
-              />
-            ) : null}
+            <div>
+              {isMounted && isLoading ? (
+                <div className="flex flex-row items-center justify-center">
+                  <LoaderCircle className="animate-spin text-slate-50" />
+                  Loading...
+                </div>
+              ) : (
+                <div>
+                  {isManager && customer?.id ? (
+                    <CheckboxWithLabel<insertCustomerSchemaType>
+                      fieldTitle="Active"
+                      nameInSchema="active"
+                      message="Yes"
+                    />
+                  ) : (
+                    <div className="h-[40px]" /> // Placeholder for consistent rendering
+                  )}
+                </div>
+              )}
+            </div>
 
             <div className="flex gap-2">
-              <Button
+              <MagicButton
                 type="submit"
-                className="w-3/4"
-                variant="default"
+                className="w-3/4 p-1 text-slate-50"
+                lightBackgroundGradient={{
+                  from: "#1e3a8a",
+                  to: "#4b0082",
+                }}
+                darkBackgroundGradient={{
+                  from: "#3a86ff",
+                  to: "#6a5acd",
+                }}
+                lightRingGradient="conic-gradient(from 90deg at 50% 50%, #E2CBFF 0%, #393BB2 50%, #E2CBFF 100%)"
+                darkRingGradient="conic-gradient(from 90deg at 50% 50%, #8A2BE2 0%, #4B0082 50%, #8A2BE2 100%)"
+                variant="magic"
                 title="Save"
                 disabled={isSaving}
               >
                 {isSaving ? (
                   <>
-                    <LoaderCircle className="animate-spin" /> Saving
+                    <LoaderCircle className="animate-spin text-slate-50" /> Saving
                   </>
                 ) : (
                   "Save"
                 )}
-              </Button>
+              </MagicButton>
 
-              <Button
+              <MagicButton
                 type="button"
-                variant="destructive"
+                className="w-1/4 p-1 text-slate-50"
+                lightBackgroundGradient={{
+                  from: "#8b0000",
+                  to: "#b22222",
+                }}
+                darkBackgroundGradient={{
+                  from: "#ff4500",
+                  to: "#ff6347",
+                }}
+                lightRingGradient="conic-gradient(from 90deg at 50% 50%, #ffa500 0%, #ffd700 50%, #ffa500 100%)"
+                darkRingGradient="conic-gradient(from 90deg at 50% 50%, #FF6347 0%, #ffa500 50%, #ffd700 100%)"
+                variant="magic"
                 title="Reset"
                 onClick={() => {
                   form.reset(defaultValues);
@@ -181,7 +219,7 @@ export default function CustomerForm({ customer }: Props) {
                 }}
               >
                 Reset
-              </Button>
+              </MagicButton>
             </div>
           </div>
         </form>
