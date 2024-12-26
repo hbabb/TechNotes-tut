@@ -8,8 +8,6 @@ import { InputWithLabel } from "@/components/form/InputWithLabel";
 import { SelectWithLabel } from "@/components/form/SelectWithLabel";
 import { TextAreaWithLabel } from "@/components/form/TextAreaWithLabel";
 
-import { useKindeBrowserClient } from "@kinde-oss/kinde-auth-nextjs";
-
 import { StatesArray } from "@/constants/StatesArray";
 
 import {
@@ -20,48 +18,66 @@ import {
 
 import { saveCustomerAction } from "@/app/actions/saveCustomerAction";
 import { DisplayServerActionResponse } from "@/components/actions/DisplayServerActionResponse";
-import { MagicButton } from "@/components/layout/MagicButton";
+import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { LoaderCircle } from "lucide-react";
 import { useAction } from "next-safe-action/hooks";
-import { useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
+import { useEffect } from "react";
 
 type Props = {
   customer?: selectCustomerSchemaType;
+  isManager?: boolean | undefined;
 };
 
-export default function CustomerForm({ customer }: Props) {
-  const [isMounted, setIsMounted] = useState(false);
-
-  useEffect(() => {
-    setIsMounted(true);
-  }, []);
-
-  const { getPermission, isLoading } = useKindeBrowserClient();
-  const isManager = !isLoading && getPermission("manager")?.isGranted;
-
+export default function CustomerForm({ customer, isManager = false }: Props) {
   const { toast } = useToast();
 
-  const defaultValues: insertCustomerSchemaType = {
-    id: customer?.id ?? 0,
-    firstName: customer?.firstName ?? "",
-    lastName: customer?.lastName ?? "",
-    address1: customer?.address1 ?? "",
-    address2: customer?.address2 ?? "",
-    city: customer?.city ?? "",
-    state: customer?.state ?? "",
-    zip: customer?.zip ?? "",
-    phone: customer?.phone ?? "",
-    email: customer?.email ?? "",
-    notes: customer?.notes ?? "",
-    active: customer?.active ?? true,
+  const searchParams = useSearchParams();
+  const hasCustomerId = searchParams.has("customerId");
+
+  const emptyValues: insertCustomerSchemaType = {
+    id: 0,
+    firstName: "",
+    lastName: "",
+    address1: "",
+    address2: "",
+    city: "",
+    state: "",
+    zip: "",
+    phone: "",
+    email: "",
+    notes: "",
+    active: true,
   };
+
+  const defaultValues: insertCustomerSchemaType = hasCustomerId
+    ? {
+        id: customer?.id ?? 0,
+        firstName: customer?.firstName ?? "",
+        lastName: customer?.lastName ?? "",
+        address1: customer?.address1 ?? "",
+        address2: customer?.address2 ?? "",
+        city: customer?.city ?? "",
+        state: customer?.state ?? "",
+        zip: customer?.zip ?? "",
+        phone: customer?.phone ?? "",
+        email: customer?.email ?? "",
+        notes: customer?.notes ?? "",
+        active: customer?.active ?? true,
+      }
+    : emptyValues;
 
   const form = useForm<insertCustomerSchemaType>({
     mode: "onBlur",
     resolver: zodResolver(insertCustomerSchema),
     defaultValues,
   });
+
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+  useEffect(() => {
+    form.reset(hasCustomerId ? defaultValues : emptyValues);
+  }, [searchParams.get("customerId")]);
 
   const {
     execute: executeSave,
@@ -150,68 +166,34 @@ export default function CustomerForm({ customer }: Props) {
               className="h-40"
             />
 
-            <div>
-              {isMounted && isLoading ? (
-                <div className="flex flex-row items-center justify-center">
-                  <LoaderCircle className="animate-spin text-slate-50" />
-                  Loading...
-                </div>
-              ) : (
-                <div>
-                  {isManager && customer?.id ? (
-                    <CheckboxWithLabel<insertCustomerSchemaType>
-                      fieldTitle="Active"
-                      nameInSchema="active"
-                      message="Yes"
-                    />
-                  ) : (
-                    <div className="h-[40px]" /> // Placeholder for consistent rendering
-                  )}
-                </div>
-              )}
-            </div>
+            {isManager && customer?.id ? (
+              <CheckboxWithLabel<insertCustomerSchemaType>
+                fieldTitle="Active"
+                nameInSchema="active"
+                message="Yes"
+              />
+            ) : null}
 
             <div className="flex gap-2">
-              <MagicButton
+              <Button
                 type="submit"
-                className="w-3/4 p-1 text-slate-50"
-                lightBackgroundGradient={{
-                  from: "#1e3a8a",
-                  to: "#4b0082",
-                }}
-                darkBackgroundGradient={{
-                  from: "#3a86ff",
-                  to: "#6a5acd",
-                }}
-                lightRingGradient="conic-gradient(from 90deg at 50% 50%, #E2CBFF 0%, #393BB2 50%, #E2CBFF 100%)"
-                darkRingGradient="conic-gradient(from 90deg at 50% 50%, #8A2BE2 0%, #4B0082 50%, #8A2BE2 100%)"
-                variant="magic"
+                className="w-3/4 text-white"
+                variant="default"
                 title="Save"
                 disabled={isSaving}
               >
                 {isSaving ? (
                   <>
-                    <LoaderCircle className="animate-spin text-slate-50" /> Saving
+                    <LoaderCircle className="animate-spin text-white" /> Saving...
                   </>
                 ) : (
                   "Save"
                 )}
-              </MagicButton>
+              </Button>
 
-              <MagicButton
+              <Button
                 type="button"
-                className="w-1/4 p-1 text-slate-50"
-                lightBackgroundGradient={{
-                  from: "#8b0000",
-                  to: "#b22222",
-                }}
-                darkBackgroundGradient={{
-                  from: "#ff4500",
-                  to: "#ff6347",
-                }}
-                lightRingGradient="conic-gradient(from 90deg at 50% 50%, #ffa500 0%, #ffd700 50%, #ffa500 100%)"
-                darkRingGradient="conic-gradient(from 90deg at 50% 50%, #FF6347 0%, #ffa500 50%, #ffd700 100%)"
-                variant="magic"
+                variant="destructive"
                 title="Reset"
                 onClick={() => {
                   form.reset(defaultValues);
@@ -219,7 +201,7 @@ export default function CustomerForm({ customer }: Props) {
                 }}
               >
                 Reset
-              </MagicButton>
+              </Button>
             </div>
           </div>
         </form>

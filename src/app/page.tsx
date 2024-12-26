@@ -26,7 +26,7 @@ export default function Home() {
           </Link>
         </div>
 
-        <div className="flex justify-center">
+        <div className="mt-4 flex justify-center">
           <LoginButton />
           {/* <Button
             asChild

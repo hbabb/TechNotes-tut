@@ -10,10 +10,15 @@ export async function getCustomerSearchResults(searchText: string) {
       lastName: customers.lastName,
       email: customers.email,
       phone: customers.phone,
+      address1: customers.address1,
+      address2: customers.address2,
       city: customers.city,
       state: customers.state,
       zip: customers.zip,
       active: customers.active,
+      createdAt: customers.createdAt,
+      updatedAt: customers.updatedAt,
+      notes: customers.notes,
     })
     .from(customers)
     .where(
@@ -26,7 +31,7 @@ export async function getCustomerSearchResults(searchText: string) {
         sql`lower(concat(${customers.firstName}, ' ', ${customers.lastName})) LIKE ${`%${searchText.toLowerCase().replace(" ", "%")}%`}`,
       ),
     )
-    .orderBy(asc(customers.firstName));
+    .orderBy(asc(customers.lastName));
 
   return results;
 }
