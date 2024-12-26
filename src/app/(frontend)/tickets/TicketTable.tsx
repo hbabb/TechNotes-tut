@@ -30,7 +30,7 @@ import { Filter } from "@/components/react-table/filter";
 import { Button } from "@/components/ui/button";
 import { usePolling } from "@/hooks/usePolling";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useMemo, useState } from "react";
+import { type JSX, useEffect, useMemo, useState } from "react";
 
 type Props = {
   data: TicketSearchResultsType;
@@ -38,7 +38,14 @@ type Props = {
 
 type RowType = TicketSearchResultsType[0];
 
-export function TicketTable({ data }: Props) {
+/**
+ * The TicketTable component displays a table of tickets, with
+ * filtering, sorting, and pagination.
+ *
+ * @param {TicketSearchResultsType} data - The data to display in the table.
+ * @returns {JSX.Element} The table component.
+ */
+export function TicketTable({ data }: Props): JSX.Element {
   const router = useRouter();
 
   const searchParams = useSearchParams();
@@ -52,14 +59,19 @@ export function TicketTable({ data }: Props) {
     },
   ]);
 
+  // Poll for new data every 30 seconds.
   usePolling(searchParams.get("searchText"), 30000);
 
+  // Get the current page index from the search params. If the page is not
+  // specified, default to 0.
   // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   const pageIndex = useMemo(() => {
     const page = searchParams.get("page");
     return page ? Number.parseInt(page) - 1 : 0;
   }, [searchParams.get("page")]);
 
+  // The column headers array contains the keys of the columns to display
+  // in the table.
   const columnHeadersArray: Array<keyof RowType> = [
     "ticketDate",
     "title",
@@ -70,6 +82,7 @@ export function TicketTable({ data }: Props) {
     "completed",
   ];
 
+  // The column widths object specifies the width of each column in the table.
   const columnWidths = {
     completed: 100,
     ticketDate: 50,
@@ -78,12 +91,14 @@ export function TicketTable({ data }: Props) {
     email: 225,
   };
 
+  // The column helper is used to create the columns for the table.
   const columnHelper = createColumnHelper<RowType>();
 
+  // The columns array contains the column definitions.
   const columns = columnHeadersArray.map((columnName) => {
     return columnHelper.accessor(
       (row) => {
-        // transformational
+        // Transformational: convert the value of the column to a string.
         const value = row[columnName];
         if (columnName === "ticketDate" && value instanceof Date) {
           return value.toLocaleDateString("en-US", {
@@ -103,6 +118,7 @@ export function TicketTable({ data }: Props) {
         id: columnName,
         size: columnWidths[columnName as keyof typeof columnWidths] ?? undefined,
         header: ({ column }) => {
+          // Render the header for the column.
           return (
             <Button
               variant="ghost"
@@ -122,7 +138,7 @@ export function TicketTable({ data }: Props) {
           );
         },
         cell: ({ getValue }) => {
-          // presentational
+          // Presentational: render the cell for the column.
           const value = getValue();
 
           if (columnName === "completed") {
@@ -142,6 +158,8 @@ export function TicketTable({ data }: Props) {
     );
   });
 
+  // The table state is initialized with the page index, column filters,
+  // and sorting.
   const table = useReactTable({
     data,
     columns,
@@ -162,6 +180,7 @@ export function TicketTable({ data }: Props) {
     getSortedRowModel: getSortedRowModel(),
   });
 
+  // When the column filters change, update the search params.
   // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     const currentPageIndex = table.getState().pagination.pageIndex;
