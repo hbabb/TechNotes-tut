@@ -8,6 +8,12 @@ import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 
 import { Users, init as kindeInit } from "@kinde/management-api-js";
 
+/**
+ * Generates the metadata for the TicketFormPage.
+ *
+ * @param searchParams The search parameters.
+ * @returns The metadata.
+ */
 export async function generateMetadata({
   searchParams,
 }: {
@@ -15,22 +21,39 @@ export async function generateMetadata({
 }) {
   const { customerId, ticketId } = await searchParams;
 
-  if (!customerId && !ticketId)
+  // If neither the customer ID or ticket ID is provided, return an error
+  // message.
+  if (!customerId && !ticketId) {
     return {
       title: "Missing Ticket ID or Customer ID",
     };
+  }
 
-  if (customerId)
+  // If the customer ID is provided, return a title with the customer ID.
+  if (customerId) {
     return {
       title: `New Ticket for Customer #${customerId}`,
     };
+  }
 
-  if (ticketId)
+  // If the ticket ID is provided, return a title with the ticket ID.
+  if (ticketId) {
     return {
       title: `Edit Ticket #${ticketId}`,
     };
+  }
 }
 
+/**
+ * The TicketFormPage component.
+ *
+ * This component renders a form for creating or editing tickets. It handles
+ * the logic to determine if the form should be for a new ticket or editing
+ * an existing ticket.
+ *
+ * @param searchParams The search parameters containing customerId or ticketId.
+ * @returns The JSX representation of the ticket form or an error message.
+ */
 export default async function TicketFormPage({
   searchParams,
 }: {
@@ -39,6 +62,7 @@ export default async function TicketFormPage({
   try {
     const { customerId, ticketId } = await searchParams;
 
+    // If neither customerId nor ticketId is provided, display an error message.
     if (!customerId && !ticketId) {
       return (
         <>
@@ -52,7 +76,7 @@ export default async function TicketFormPage({
     const [managerPermission, user] = await Promise.all([getPermission("manager"), getUser()]);
     const isManager = managerPermission?.isGranted;
 
-    // New ticket form
+    // Handle new ticket form if customerId is provided.
     if (customerId) {
       const customer = await getCustomer(Number.parseInt(customerId));
 
@@ -74,7 +98,7 @@ export default async function TicketFormPage({
         );
       }
 
-      // return ticket form
+      // Initialize and fetch techs if the user is a manager.
       if (isManager) {
         kindeInit(); // Initializes the Kinde Management API
         const { users } = await Users.getUsers();
@@ -84,14 +108,14 @@ export default async function TicketFormPage({
             users.map((user) => ({ id: user.email!, description: user.email! }))
           : [];
 
-        return <TicketForm customer={customer} techs={techs} />;
+        return <TicketForm customer={customer} techs={techs} isManager={isManager} />;
         // biome-ignore lint/style/noUselessElse: <explanation>
       } else {
         return <TicketForm customer={customer} />;
       }
     }
 
-    // Edit ticket form
+    // Handle edit ticket form if ticketId is provided.
     if (ticketId) {
       const ticket = await getTicket(Number.parseInt(ticketId));
 
@@ -106,7 +130,6 @@ export default async function TicketFormPage({
 
       const customer = await getCustomer(ticket.customerId);
 
-      // return ticket form
       if (isManager) {
         kindeInit(); // Initializes the Kinde Management API
         const { users } = await Users.getUsers();
@@ -120,11 +143,12 @@ export default async function TicketFormPage({
             }))
           : [];
 
-        return <TicketForm customer={customer} ticket={ticket} techs={techs} />;
+        return (
+          <TicketForm customer={customer} ticket={ticket} techs={techs} isManager={isManager} />
+        );
         // biome-ignore lint/style/noUselessElse: <explanation>
       } else {
         const isEditable = user.email?.toLowerCase() === ticket.tech.toLowerCase();
-
         return <TicketForm customer={customer} ticket={ticket} isEditable={isEditable} />;
       }
     }

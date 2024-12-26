@@ -30,11 +30,30 @@ type Props = {
     description: string;
   }[];
   isEditable?: boolean;
+  isManager?: boolean | undefined;
 };
 
-export default function TicketForm({ customer, ticket, techs, isEditable = true }: Props) {
-  const isManager = Array.isArray(techs);
-
+/**
+ * The TicketForm component.
+ *
+ * This component renders a form for creating or editing tickets. It handles the
+ * logic to determine if the form should be for a new ticket or editing an
+ * existing ticket.
+ *
+ * @param customer The customer to associate with the ticket
+ * @param ticket The ticket to edit, if any
+ * @param techs A list of tech IDs and descriptions, if the user is a manager
+ * @param isEditable Whether the ticket is editable
+ * @param isManager Whether the user is a manager
+ * @returns The JSX representation of the ticket form
+ */
+export default function TicketForm({
+  customer,
+  ticket,
+  techs,
+  isEditable = true,
+  isManager = false,
+}: Props) {
   const { toast } = useToast();
 
   const defaultValues: insertTicketSchemaType = {
@@ -58,7 +77,13 @@ export default function TicketForm({ customer, ticket, techs, isEditable = true 
     isPending: isSaving,
     reset: resetSaveAction,
   } = useAction(saveTicketAction, {
-    onSuccess({ data }) {
+    /**
+     * If the save is successful, display a toast message with the result.
+     *
+     * @param {Object} result - The result of the save action
+     */
+    onSuccess({ data }: { data?: { message: string } }) {
+      // If the save is successful, display a toast message with the result
       if (data?.message) {
         toast({
           variant: "default",
@@ -77,7 +102,13 @@ export default function TicketForm({ customer, ticket, techs, isEditable = true 
     },
   });
 
+  /**
+   * The function to call when the form is submitted.
+   *
+   * @param {Object} data - The form data
+   */
   async function submitForm(data: insertTicketSchemaType) {
+    // Call the save action with the form data
     executeSave(data);
   }
 
@@ -105,7 +136,7 @@ export default function TicketForm({ customer, ticket, techs, isEditable = true 
               disabled={!isEditable}
             />
 
-            {isManager ? (
+            {isManager && techs ? (
               <SelectWithLabel<insertTicketSchemaType>
                 fieldTitle="Tech ID"
                 nameInSchema="tech"

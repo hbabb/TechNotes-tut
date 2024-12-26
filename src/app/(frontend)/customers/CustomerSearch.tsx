@@ -5,7 +5,13 @@ import Form from "next/form";
 export function CustomerSearch() {
   return (
     <Form action="/customers" className="flex items-center gap-2">
-      <Input name="searchText" type="text" placeholder="Search Customers..." className="w-full" />
+      <Input
+        name="searchText"
+        type="text"
+        placeholder="Search Customers..."
+        className="w-full"
+        autoFocus
+      />
       <SearchButton />
     </Form>
   );
