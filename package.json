@@ -5,7 +5,11 @@
 	"license": "MIT",
 	"type": "module",
 	"browser list": {
-		"production": [">0.2%", "not dead", "not op_mini all"],
+		"production": [
+			">0.2%",
+			"not dead",
+			"not op_mini all"
+		],
 		"development": [
 			"last 1 chrome version",
 			"last 1 firefox version",
@@ -42,6 +46,7 @@
 		"@vercel/analytics": "^1.4.1",
 		"class-variance-authority": "^0.7.1",
 		"clsx": "^2.1.1",
+		"dotenv-expand": "^12.0.1",
 		"drizzle-orm": "^0.38.3",
 		"drizzle-zod": "^0.6.1",
 		"framer-motion": "^11.16.4",
