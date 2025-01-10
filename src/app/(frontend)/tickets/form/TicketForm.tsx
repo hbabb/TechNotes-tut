@@ -93,7 +93,7 @@ export default function TicketForm({
       }
     },
     // biome-ignore lint/correctness/noUnusedVariables: <explanation>
-    onError({ error }) {
+    onError() {
       toast({
         variant: "destructive",
         title: "❌ Error",
@@ -116,7 +116,7 @@ export default function TicketForm({
     <div className="flex flex-col gap-1 sm:px-8">
       <DisplayServerActionResponse result={saveResult} />
       <div>
-        <h2 className="font-bold text-2xl">
+        <h2 className="text-2xl font-bold">
           {ticket?.id && isEditable
             ? `Edit Ticket # ${ticket.id}`
             : ticket?.id
@@ -141,7 +141,10 @@ export default function TicketForm({
                 fieldTitle="Tech ID"
                 nameInSchema="tech"
                 data={[
-                  { id: "new-ticket@example.com", description: "new-ticket@example.com" },
+                  {
+                    id: "new-ticket@example.com",
+                    description: "new-ticket@example.com",
+                  },
                   ...techs,
                 ]}
               />

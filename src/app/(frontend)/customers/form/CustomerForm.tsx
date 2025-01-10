@@ -77,6 +77,7 @@ export default function CustomerForm({ customer, isManager = false }: Props) {
   // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     form.reset(hasCustomerId ? defaultValues : emptyValues);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchParams.get("customerId")]);
 
   const {
@@ -96,7 +97,7 @@ export default function CustomerForm({ customer, isManager = false }: Props) {
     },
 
     // biome-ignore lint/correctness/noUnusedVariables: <explanation>
-    onError({ error }) {
+    onError() {
       toast({
         variant: "destructive",
         title: "❌ Error",
@@ -114,7 +115,7 @@ export default function CustomerForm({ customer, isManager = false }: Props) {
     <div className="flex flex-col gap-1 sm:px-8">
       <DisplayServerActionResponse result={saveResult} />
       <div>
-        <h2 className="font-bold text-2xl">
+        <h2 className="text-2xl font-bold">
           {customer?.id ? "Edit" : "New"} Customer {customer?.id ? `#${customer.id}` : "Form"}
         </h2>
       </div>

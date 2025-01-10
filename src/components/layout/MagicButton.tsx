@@ -43,7 +43,7 @@ export function MagicButton({
       {/* Background gradient */}
       <span
         className={
-          "inline-flex h-full w-full cursor-pointer items-center justify-center rounded-full px-3 py-1 font-medium text-sm backdrop-blur-3xl"
+          "inline-flex h-full w-full cursor-pointer items-center justify-center rounded-full px-3 py-1 text-sm font-medium backdrop-blur-3xl"
         }
         style={{
           background: `linear-gradient(to bottom, ${
