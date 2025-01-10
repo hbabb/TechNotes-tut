@@ -19,7 +19,7 @@ export const env = createEnv({
     KINDE_CLIENT_ID: z.string(),
     KINDE_CLIENT_SECRET: z.string(),
     KINDE_ISSUER_URL: z.string().url(),
-    KINDE_SITE_URL: z.string().url(),
+    KINDE_SITE_URL: z.string(),
     KINDE_POST_LOGOUT_REDIRECT_URL: z.string(),
     KINDE_POST_LOGIN_REDIRECT_URL: z.string(),
     KINDE_DOMAIN: z.string().url(),
