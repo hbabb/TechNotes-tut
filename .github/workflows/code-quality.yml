@@ -1,4 +1,4 @@
-name: Code quality
+name: Code Quality
 
 on:
   push:
@@ -10,9 +10,17 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - name: Setup Biome
-        uses: biomejs/setup-biome@v2
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
         with:
-          version: latest
-      - name: Run Biome
-        run: biome ci src
+          node-version: "20" # Use your preferred Node.js version
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Run ESLint
+        run: npx eslint 'src/**/*.{js,jsx,ts,tsx}'
+
+      - name: Run Prettier
+        run: npx prettier --check 'src/**/*.{js,jsx,ts,tsx,json,md}'

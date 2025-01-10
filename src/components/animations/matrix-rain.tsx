@@ -72,7 +72,7 @@ export const MatrixRain = ({ className = "" }: MatrixRainProps) => {
   }, []);
 
   return (
-    <div className="-z-20 fixed inset-0">
+    <div className="fixed inset-0 -z-20">
       <div className="-z-15 absolute inset-0 bg-matrix-dark" />
       <canvas
         ref={canvasRef}

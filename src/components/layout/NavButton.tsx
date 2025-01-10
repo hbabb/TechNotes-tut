@@ -20,7 +20,7 @@ export function NavButton({ icon: Icon, label, href }: Props) {
       asChild
     >
       {href ? (
-        // biome-ignore lint/suspicious/noExplicitAny: <explanation>
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         <Link href={href as any}>
           <Icon />
         </Link>

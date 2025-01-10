@@ -30,8 +30,8 @@ export function NavButtonMenu({ icon: Icon, label, choices }: Props) {
       <DropdownMenuContent align="end">
         {choices.map((choice) => (
           <DropdownMenuItem key={choice.title} asChild>
-            {/* @ts-ignore */}
-            <Link href={choice.href}>{choice.title}</Link>
+            {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+            <Link href={choice.href as any}>{choice.title}</Link>
           </DropdownMenuItem>
         ))}
       </DropdownMenuContent>

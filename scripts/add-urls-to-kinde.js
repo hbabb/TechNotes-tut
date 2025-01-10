@@ -1,4 +1,4 @@
-console.log("VERCEL_URL: ", process.env.VERCEL_URL);
+// console.log("VERCEL_URL: ", process.env.VERCEL_URL);
 
 async function getAuthToken() {
   try {
@@ -100,15 +100,15 @@ async function addCallbackUrlToKinde(token) {
 
 (async () => {
   if (process.env.VERCEL === "1") {
-    console.log(typeof process.env.VERCEL);
+    // console.log(typeof process.env.VERCEL);
     try {
-      console.log("VERCEL_URL: ", process.env.VERCEL_URL);
+      // console.log("VERCEL_URL: ", process.env.VERCEL_URL);
       const authToken = await getAuthToken();
-      console.log("AUTH_TOKEN: ", authToken);
+      // console.log("AUTH_TOKEN: ", authToken);
       await addCallbackUrlToKinde(authToken);
-      console.log("Callback URL added to Kinde");
+      // console.log("Callback URL added to Kinde");
       await addLogoutUrlToKinde(authToken);
-      console.log("Logout URL added to Kinde");
+      // console.log("Logout URL added to Kinde");
     } catch (error) {
       console.error("Script failed:", error);
     }

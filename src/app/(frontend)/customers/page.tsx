@@ -1,4 +1,5 @@
 import { CustomerSearch } from "@/app/(frontend)/customers/CustomerSearch";
+import { CustomerTable } from "@/app/(frontend)/customers/CustomerTable";
 import { getCustomerSearchResults } from "@/lib/queries/getCustomerSearchResults";
 
 export const metadata = {
@@ -19,7 +20,7 @@ export default async function Customers({
   return (
     <>
       <CustomerSearch />
-      <p>{JSON.stringify(results)}</p>
+      {results.length ? <CustomerTable data={results} /> : <p className="mt-4">No results found</p>}
     </>
   );
 }

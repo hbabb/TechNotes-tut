@@ -21,7 +21,7 @@ export const saveCustomerAction = actionClient
 
     const isAuth = await isAuthenticated();
 
-    if (!isAuth) redirect("/login");
+    if (!isAuth) redirect("/");
 
     // throw Error("test error") This is just for testing (comment out when not needed!!!!!)
 
@@ -37,7 +37,7 @@ export const saveCustomerAction = actionClient
           email: customer.email,
           phone: customer.phone,
           address1: customer.address1,
-          ...(customer.address2?.trimEnd() ? { address2: customer.address2 } : {}),
+          ...(customer.address2?.trim() ? { address2: customer.address2 } : {}),
           city: customer.city,
           state: customer.state,
           zip: customer.zip,

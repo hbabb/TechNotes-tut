@@ -1,6 +1,4 @@
 "use client";
-
-import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -9,8 +7,6 @@ import { CheckboxWithLabel } from "@/components/form/CheckboxWithLabel";
 import { InputWithLabel } from "@/components/form/InputWithLabel";
 import { SelectWithLabel } from "@/components/form/SelectWithLabel";
 import { TextAreaWithLabel } from "@/components/form/TextAreaWithLabel";
-
-import { useKindeBrowserClient } from "@kinde-oss/kinde-auth-nextjs";
 
 import { StatesArray } from "@/constants/StatesArray";
 
@@ -22,40 +18,67 @@ import {
 
 import { saveCustomerAction } from "@/app/actions/saveCustomerAction";
 import { DisplayServerActionResponse } from "@/components/actions/DisplayServerActionResponse";
+import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { LoaderCircle } from "lucide-react";
 import { useAction } from "next-safe-action/hooks";
+import { useSearchParams } from "next/navigation";
+import { useEffect } from "react";
 
 type Props = {
   customer?: selectCustomerSchemaType;
+  isManager?: boolean | undefined;
 };
 
-export default function CustomerForm({ customer }: Props) {
-  const { getPermission, isLoading } = useKindeBrowserClient();
-  const isManager = !isLoading && getPermission("manager")?.isGranted;
-
+export default function CustomerForm({ customer, isManager = false }: Props) {
   const { toast } = useToast();
 
-  const defaultValues: insertCustomerSchemaType = {
-    id: customer?.id ?? 0,
-    firstName: customer?.firstName ?? "",
-    lastName: customer?.lastName ?? "",
-    address1: customer?.address1 ?? "",
-    address2: customer?.address2 ?? "",
-    city: customer?.city ?? "",
-    state: customer?.state ?? "",
-    zip: customer?.zip ?? "",
-    phone: customer?.phone ?? "",
-    email: customer?.email ?? "",
-    notes: customer?.notes ?? "",
-    active: customer?.active ?? true,
+  const searchParams = useSearchParams();
+  const hasCustomerId = searchParams.has("customerId");
+
+  const emptyValues: insertCustomerSchemaType = {
+    id: 0,
+    firstName: "",
+    lastName: "",
+    address1: "",
+    address2: "",
+    city: "",
+    state: "",
+    zip: "",
+    phone: "",
+    email: "",
+    notes: "",
+    active: true,
   };
+
+  const defaultValues: insertCustomerSchemaType = hasCustomerId
+    ? {
+        id: customer?.id ?? 0,
+        firstName: customer?.firstName ?? "",
+        lastName: customer?.lastName ?? "",
+        address1: customer?.address1 ?? "",
+        address2: customer?.address2 ?? "",
+        city: customer?.city ?? "",
+        state: customer?.state ?? "",
+        zip: customer?.zip ?? "",
+        phone: customer?.phone ?? "",
+        email: customer?.email ?? "",
+        notes: customer?.notes ?? "",
+        active: customer?.active ?? true,
+      }
+    : emptyValues;
 
   const form = useForm<insertCustomerSchemaType>({
     mode: "onBlur",
     resolver: zodResolver(insertCustomerSchema),
     defaultValues,
   });
+
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+  useEffect(() => {
+    form.reset(hasCustomerId ? defaultValues : emptyValues);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchParams.get("customerId")]);
 
   const {
     execute: executeSave,
@@ -74,7 +97,7 @@ export default function CustomerForm({ customer }: Props) {
     },
 
     // biome-ignore lint/correctness/noUnusedVariables: <explanation>
-    onError({ error }) {
+    onError() {
       toast({
         variant: "destructive",
         title: "❌ Error",
@@ -92,7 +115,7 @@ export default function CustomerForm({ customer }: Props) {
     <div className="flex flex-col gap-1 sm:px-8">
       <DisplayServerActionResponse result={saveResult} />
       <div>
-        <h2 className="font-bold text-2xl">
+        <h2 className="text-2xl font-bold">
           {customer?.id ? "Edit" : "New"} Customer {customer?.id ? `#${customer.id}` : "Form"}
         </h2>
       </div>
@@ -144,9 +167,7 @@ export default function CustomerForm({ customer }: Props) {
               className="h-40"
             />
 
-            {isLoading ? (
-              <p>Loading...</p>
-            ) : isManager && customer?.id ? (
+            {isManager && customer?.id ? (
               <CheckboxWithLabel<insertCustomerSchemaType>
                 fieldTitle="Active"
                 nameInSchema="active"
@@ -157,14 +178,14 @@ export default function CustomerForm({ customer }: Props) {
             <div className="flex gap-2">
               <Button
                 type="submit"
-                className="w-3/4"
+                className="w-3/4 text-white"
                 variant="default"
                 title="Save"
                 disabled={isSaving}
               >
                 {isSaving ? (
                   <>
-                    <LoaderCircle className="animate-spin" /> Saving
+                    <LoaderCircle className="animate-spin text-white" /> Saving...
                   </>
                 ) : (
                   "Save"
