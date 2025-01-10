@@ -8,13 +8,7 @@ type Props = {
   };
 };
 
-const MessageBox = ({
-  type,
-  content,
-}: {
-  type: "success" | "error";
-  content: React.ReactNode;
-}) => (
+const MessageBox = ({ type, content }: { type: "success" | "error"; content: React.ReactNode }) => (
   <div className={`my-2 rounded-lg bg-accent px-4 py-2 ${type === "error" ? "text-red-500" : ""}`}>
     {type === "success" ? "🎉" : "🚨"} {content}
   </div>

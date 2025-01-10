@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 
 import type { TicketSearchResultsType } from "@/lib/queries/getTicketSearchResults";
@@ -64,7 +65,6 @@ export function TicketTable({ data }: Props): JSX.Element {
 
   // Get the current page index from the search params. If the page is not
   // specified, default to 0.
-  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   const pageIndex = useMemo(() => {
     const page = searchParams.get("page");
     return page ? Number.parseInt(page) - 1 : 0;

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-asserted-optional-chain */
 import TicketForm from "@/app/(frontend)/tickets/form/TicketForm";
 import { BackButton } from "@/components/layout/BackButton";
 import { getCustomer } from "@/lib/queries/getCustomers";
@@ -104,12 +105,12 @@ export default async function TicketFormPage({
         const { users } = await Users.getUsers();
 
         const techs = users
-          ? // biome-ignore lint/style/noNonNullAssertion: <explanation>
-            users.map((user) => ({ id: user.email!, description: user.email! }))
+          ? users
+              .filter((user): user is { email: string } => user.email === "string")
+              .map((user) => ({ id: user.email, description: user.email }))
           : [];
 
         return <TicketForm customer={customer} techs={techs} isManager={isManager} />;
-        // biome-ignore lint/style/noUselessElse: <explanation>
       } else {
         return <TicketForm customer={customer} />;
       }
@@ -136,9 +137,8 @@ export default async function TicketFormPage({
 
         const techs = users
           ? users.map((user) => ({
-              // biome-ignore lint/style/noNonNullAssertion: <explanation>
               id: user.email?.toLowerCase()!,
-              // biome-ignore lint/style/noNonNullAssertion: <explanation>
+
               description: user.email?.toLowerCase()!,
             }))
           : [];

@@ -33,16 +33,12 @@ import { Button } from "@/components/ui/button";
 import { MoreHorizontal, TableOfContents } from "lucide-react";
 
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 
 type Props = {
   data: selectCustomerSchemaType[];
 };
 
 export function CustomerTable({ data }: Props) {
-  // biome-ignore lint/correctness/noUnusedVariables: <explanation>
-  const router = useRouter();
-
   const columnHeadersArray: Array<keyof selectCustomerSchemaType> = [
     "firstName",
     "lastName",

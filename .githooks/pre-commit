@@ -6,6 +6,11 @@ if git status --short | grep --quiet '^MM'; then
   exit 1;
 fi
 
-npx @biomejs/biome check --write --staged --files-ignore-unknown=true --no-errors-on-unmatched
+# Run ESLint on all staged JavaScript and TypeScript files in src/
+git diff --cached --name-only --diff-filter=d | grep '^src/.*\.\(js\|jsx\|ts\|tsx\)$' | xargs --no-run-if-empty npx eslint --fix
 
-git update-index --again
+# Run Prettier on all staged files in src/
+git diff --cached --name-only --diff-filter=d | grep '^src/.*\.\(js\|jsx\|ts\|tsx\|css\|json\|md\)$' | xargs --no-run-if-empty npx prettier --write
+
+# Add fixed files back to Git
+git diff --cached --name-only --diff-filter=d | grep '^src/.*\.\(js\|jsx\|ts\|tsx\|css\|json\|md\)$' | xargs --no-run-if-empty git add

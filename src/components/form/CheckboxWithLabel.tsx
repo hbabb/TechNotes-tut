@@ -39,7 +39,7 @@ export function CheckboxWithLabel<S>({
                 disabled={disabled}
               />
             </FormControl>
-            <span className="text-muted-foreground text-sm">{message}</span>
+            <span className="text-sm text-muted-foreground">{message}</span>
           </div>
         </FormItem>
       )}
