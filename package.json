@@ -24,8 +24,7 @@
 		"format": "prettier --write src/**/*.{ts,tsx,js,jsx,json,css,scss,md}",
 		"git": "git config --local core.hooksPath .githooks",
 		"db:generate": "drizzle-kit generate",
-		"db:migrate": "tsx ./src/db/migrate.ts",
-		"postbuild": "node ./scripts/add-urls-to-kinde.js"
+		"db:migrate": "tsx ./src/db/migrate.ts"
 	},
 	"dependencies": {
 		"@hookform/resolvers": "^3.10.0",
